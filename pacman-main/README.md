@@ -1,2 +1,2 @@
 # pacman
-Pacman game for software engineering class, with some twists.
+Pacman game for software engineering class, graaaaaceeeeeee.

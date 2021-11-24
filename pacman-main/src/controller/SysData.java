@@ -27,7 +27,7 @@ public class SysData {
 	
 	private static ArrayList<Question> questions = new ArrayList<>();
 	private ArrayList<Question> currentGameQuestions = new ArrayList<>();
-	static String path = "pacman-main/src/controller/q.json";
+	static String path = "src/controller/q.json";
 
 
 	private static SysData instance;
@@ -64,7 +64,6 @@ public class SysData {
 				while (iterator2.hasNext())
 					answers.add(iterator2.next());
 				questions = arr;
-				System.out.println(answers); //TEST
 				answers.clear();
 			}
 			System.out.println(arr); // TEST
@@ -112,6 +111,34 @@ public class SysData {
 		return true;
 	}
 	
+	// Loop through all the questions untill it matches the wanted question to delete.
+	public static boolean deleteQuestion(String question) {
+		try {
+			JSONObject q = (JSONObject) new JSONParser().parse(new FileReader(path));
+			JSONArray arr = (JSONArray) q.get("questions");
+			for(int i=0; i< arr.size(); i++) {
+				JSONObject toDelete = (JSONObject) arr.get(i);
+				String qToDelete = (String) toDelete.get("question");
+				if(qToDelete.equals(question)) {
+					arr.remove(i);
+					// create a new json object to hold the array and the array key
+					JSONObject toAdd = new JSONObject();
+					toAdd.put("questions", arr);
+					// write json object to file
+					FileWriter file = new FileWriter(path, false);
+					file.write(toAdd.toJSONString());
+					file.flush();
+					file.close();
+				}
+			}	
+		}catch (IOException | ParseException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
+	
 	public static void main(String args[]) {
 		readJson();
 		ArrayList<String> answers = new ArrayList<String>();
@@ -121,10 +148,15 @@ public class SysData {
 		answers.add("A4");
 		addQuestion("What?",answers, "A3", "4");
 		readJson();
+		String toDelete = "What?";
+		deleteQuestion(toDelete);
+		readJson();
 		
 	}
 	
 }
+
+
 
 
 

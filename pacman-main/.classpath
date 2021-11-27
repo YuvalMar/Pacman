@@ -6,7 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Eitan/Desktop/json-20210307.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Eitan/Desktop/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Berko/Desktop/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Berko/Desktop/json-simple-1.1.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="out/production/Pacman"/>
 </classpath>

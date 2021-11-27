@@ -16,7 +16,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
+import exceptions.NotFourAnswersException;
 import model.Question;
 
 /**
@@ -41,9 +41,10 @@ public class SysData {
 	/**
 	 * Read JSON questions file and parse to string variables.
 	 * Every iterations adds the question to the questions ArrayList declared in line 29(ArrayList<Question>).
+	 * @return 
 	 */
 	@SuppressWarnings("unchecked")
-	public static void readJson() {
+	public static ArrayList<Question> readJson() {
 		try {
 			ArrayList<String> answers = new ArrayList<>();
 			String question = "";
@@ -52,6 +53,7 @@ public class SysData {
 			String team = "";
 			JSONObject obj = (JSONObject) new JSONParser().parse(new FileReader(path));
 			JSONArray arr = (JSONArray) obj.get("questions");
+			ArrayList<Question> q2 = new ArrayList<>();
 			Iterator<JSONObject> iterator = arr.iterator();
 			while (iterator.hasNext()) {
 				JSONObject temp = iterator.next();
@@ -66,10 +68,13 @@ public class SysData {
 				questions = arr;
 				answers.clear();
 			}
-			System.out.println(arr); // TEST
+			System.out.println(questions); // TEST
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
+		}catch(NullPointerException e) {
+			e.printStackTrace();
 		}
+		return questions;
 	}
 	
 	
@@ -83,6 +88,8 @@ public class SysData {
 	 */
 	public static boolean addQuestion(String question, ArrayList<String> answers, String correctAnswer, String level) {
 		try {
+			if(answers.size() != 4)
+				throw new NotFourAnswersException();
 			JSONObject q = (JSONObject) new JSONParser().parse(new FileReader(path));
 			JSONArray arr = (JSONArray) q.get("questions");
 			JSONObject obj = new JSONObject();
@@ -107,12 +114,16 @@ public class SysData {
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 			return false;
+		} catch (NotFourAnswersException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return true;
 	}
 	
 	// Loop through all the questions untill it matches the wanted question to delete.
 	public static boolean deleteQuestion(String question) {
+		boolean bool = false;
 		try {
 			JSONObject q = (JSONObject) new JSONParser().parse(new FileReader(path));
 			JSONArray arr = (JSONArray) q.get("questions");
@@ -120,6 +131,7 @@ public class SysData {
 				JSONObject toDelete = (JSONObject) arr.get(i);
 				String qToDelete = (String) toDelete.get("question");
 				if(qToDelete.equals(question)) {
+					bool = true;
 					arr.remove(i);
 					// create a new json object to hold the array and the array key
 					JSONObject toAdd = new JSONObject();
@@ -135,22 +147,22 @@ public class SysData {
 			e.printStackTrace();
 			return false;
 		}
-		return true;
+		return bool;
 		
 	}
 	
 	public static void main(String args[]) {
 		readJson();
-		ArrayList<String> answers = new ArrayList<String>();
-		answers.add("A1");
-		answers.add("A2");
-		answers.add("A3");
-		answers.add("A4");
-		addQuestion("What?",answers, "A3", "4");
-		readJson();
-		String toDelete = "What?";
-		deleteQuestion(toDelete);
-		readJson();
+//		ArrayList<String> answers = new ArrayList<String>();
+//		answers.add("A1");
+//		answers.add("A2");
+//		answers.add("A3");
+//		answers.add("A4");
+//		addQuestion("What?",answers, "A3", "4");
+//		readJson();
+//		String toDelete = "What?";
+//		deleteQuestion(toDelete);
+//		readJson();
 		
 	}
 	

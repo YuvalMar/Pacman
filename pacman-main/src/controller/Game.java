@@ -398,7 +398,7 @@ public class Game extends JPanel{
 
         siren.stop();
 
-        new PacWindow();
+        new PacWindow("LESH");
         windowParent.dispose();
 
         /*

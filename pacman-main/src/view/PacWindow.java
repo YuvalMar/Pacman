@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class PacWindow extends JFrame {
 
-    public PacWindow() {
+    public PacWindow(String playerName) {
         setTitle("AKP Pacman v1.0");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());

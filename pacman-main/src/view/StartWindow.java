@@ -42,15 +42,19 @@ public class StartWindow extends JFrame {
         //buttonsC.setLayout(new FlowLayout(FlowLayout.LEADING,20,10));
         buttonsC.setLayout(new BoxLayout(buttonsC,BoxLayout.Y_AXIS));
         FancyButton startButton = new FancyButton("Start Game");
+        FancyButton manageQuestionsButton = new FancyButton("Manage Questions");
+        FancyButton highScoreButton = new FancyButton("High Scores");
         FancyButton customButton = new FancyButton("Customize Game");
 
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        manageQuestionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        highScoreButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         customButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PacWindow pw = new PacWindow();
+            	PlayerNameWindow pn = new PlayerNameWindow();
                 //new PacWindow();
                 dispose();
             }
@@ -63,9 +67,27 @@ public class StartWindow extends JFrame {
                 dispose();
             }
         });
+        
+        manageQuestionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ManageQuestionsWindow mq = new ManageQuestionsWindow();
+                dispose();
+            }
+        });
+        
+        highScoreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HighScoresWindow hb = new HighScoresWindow();
+                dispose();
+            }
+        });
 
         buttonsC.add(startButton);
         buttonsC.add(customButton);
+        buttonsC.add(highScoreButton);
+        buttonsC.add(manageQuestionsButton);
 
         getContentPane().add(buttonsC);
 

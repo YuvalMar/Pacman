@@ -1,23 +1,26 @@
 package model;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Question {
-    public enum difficulty {
-        EASY, MEDIUM, HARD
-    }
-    public int id;
+    
+    public static int id = 1;
     public Point position;
-    public difficulty diff;
+    public String level;
     public String qBody;
-    public Answer[] answers;
+    public ArrayList<String> answers = new ArrayList<String>();
+    public String correctAns;
+    
 
-    public Question(int id, Point position, difficulty diff, String qBody, Answer[] answers) {
-        this.id = id;
+    public Question(Point position, String level, String qBody, ArrayList<String> answers, String correct) {
+        Question.id = id++;
         this.position = position;
-        this.diff = diff;
+        this.level = level;
         this.qBody = qBody;
-        this.answers = answers;
+        for(String a : answers)
+        	this.answers.add(a);
+        this.correctAns = correct;
     }
 
     public int getId() {
@@ -36,12 +39,12 @@ public class Question {
         this.position = position;
     }
 
-    public difficulty getDiff() {
-        return diff;
+    public String getLevel() {
+        return level;
     }
 
-    public void setDiff(difficulty diff) {
-        this.diff = diff;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getqBody() {
@@ -52,11 +55,21 @@ public class Question {
         this.qBody = qBody;
     }
 
-    public Answer[] getAnswers() {
+    public ArrayList<String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(Answer[] answers) {
+    public void setAnswers(ArrayList<String> answers) {
         this.answers = answers;
     }
+
+	@Override
+	public String toString() {
+		return  qBody;
+	}
+	
+	public String getCorrectAnswer() {
+		return this.correctAns;
+	}
+    
 }

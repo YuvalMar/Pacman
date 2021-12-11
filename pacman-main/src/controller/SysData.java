@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,7 +18,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import exceptions.NotFourAnswersException;
+import model.Answer;
 import model.Question;
+
 
 /**
  *This class defines reading to JSON files and writing to it.
@@ -25,9 +28,9 @@ import model.Question;
 
 public class SysData {
 	
-	private static ArrayList<Question> questions = new ArrayList<>();
+	private ArrayList<Question> questions = new ArrayList<Question>();
 	private ArrayList<Question> currentGameQuestions = new ArrayList<>();
-	static String path = "src/controller/q.json";
+	public String path = "src/controller/q.json";
 
 
 	private static SysData instance;
@@ -44,9 +47,14 @@ public class SysData {
 	 * @return 
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Question> readJson() {
+	public  void readJson() {
 		try {
-			ArrayList<String> answers = new ArrayList<>();
+			ArrayList<String> answers = new ArrayList<String>();
+			ArrayList<String> ans = new ArrayList<String>();
+			ans.add("1");
+			ans.add("2");
+			ans.add("3");
+			ans.add("4");
 			String question = "";
 			String correctAnswer = "";
 			String level = "";
@@ -62,19 +70,26 @@ public class SysData {
 				level = (String) temp.get("level");
 				team = (String) temp.get("team");
 				JSONArray tempAnswers = (JSONArray) temp.get("answers");
-				Iterator<String> iterator2 = tempAnswers.iterator();
-				while (iterator2.hasNext())
-					answers.add(iterator2.next());
-				questions = arr;
+				for( int i=0; i<tempAnswers.size(); i++) {
+					answers.add((String) tempAnswers.get(i));
+					
+				}
+//				Iterator<String> iterator2 = tempAnswers.iterator();
+//				while (iterator2.hasNext()) {
+//					answers.add(iterator2.next());
+//				}
+//				
+//				questions = arr;
+				Question q = new Question(new Point(0,0), level, question, answers, correctAnswer);
+				questions.add(q);
 				answers.clear();
 			}
-			System.out.println(questions); // TEST
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}catch(NullPointerException e) {
 			e.printStackTrace();
 		}
-		return questions;
+		return;
 	}
 	
 	
@@ -86,7 +101,7 @@ public class SysData {
 	 * @return
 	 * Convert the question, answers list, correct answer and level from String to JSON.
 	 */
-	public static boolean addQuestion(String question, ArrayList<String> answers, String correctAnswer, String level) {
+	public  boolean addQuestion(String question, ArrayList<String> answers, String correctAnswer, String level) {
 		try {
 			if(answers.size() != 4)
 				throw new NotFourAnswersException();
@@ -122,7 +137,7 @@ public class SysData {
 	}
 	
 	// Loop through all the questions untill it matches the wanted question to delete.
-	public static boolean deleteQuestion(String question) {
+	public  boolean deleteQuestion(String question) {
 		boolean bool = false;
 		try {
 			JSONObject q = (JSONObject) new JSONParser().parse(new FileReader(path));
@@ -150,21 +165,18 @@ public class SysData {
 		return bool;
 		
 	}
-	
-	public static void main(String args[]) {
+
+	public  ArrayList<Question> getQuestionsList(){
+		questions.clear();
 		readJson();
-//		ArrayList<String> answers = new ArrayList<String>();
-//		answers.add("A1");
-//		answers.add("A2");
-//		answers.add("A3");
-//		answers.add("A4");
-//		addQuestion("What?",answers, "A3", "4");
-//		readJson();
-//		String toDelete = "What?";
-//		deleteQuestion(toDelete);
-//		readJson();
-		
+		return questions;
 	}
+	
+	
+	public  String getQuestions(int index) {
+		return getQuestionsList().get(index).getAnswers().get(0);
+	}
+	
 	
 }
 

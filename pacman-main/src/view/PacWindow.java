@@ -11,12 +11,12 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Scanner;
 
-public class PacWindow extends JFrame {
+public class PacWindow extends JFrame  {
 
     public PacWindow(String playerName) {
         setTitle("AKP Pacman v1.0");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.black);
 
         setSize(794, 884);
@@ -38,10 +38,13 @@ public class PacWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * @wbp.parser.constructor
+     */
     public PacWindow(MapData md) {
         setTitle("AKP Pacman v1.0");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.black);
 
         setSize(794, 884);

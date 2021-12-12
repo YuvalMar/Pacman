@@ -3,6 +3,7 @@ package controller;
 import misc.*;
 import model.*;
 import view.PacWindow;
+import view.QuestionWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel{
 
@@ -36,7 +38,7 @@ public class Game extends JPanel{
     public boolean isGameOver = false;
     public boolean isWin = false;
     public boolean drawScore = false;
-    public boolean clearScore = false;
+    public boolean clearScore = false; 
     public int scoreToAdd = 0;
 
     public int score;
@@ -194,8 +196,10 @@ public class Game extends JPanel{
         Food foodToEat = null;
         //Check food eat
         for(Food f : foods){
-            if(pacman.logicalPosition.x == f.position.x && pacman.logicalPosition.y == f.position.y)
+            if(pacman.logicalPosition.x == f.position.x && pacman.logicalPosition.y == f.position.y) {
                 foodToEat = f;
+                
+            }
         }
         if(foodToEat!=null) {
             SoundPlayer.play("pacman_eat.wav");
@@ -220,6 +224,7 @@ public class Game extends JPanel{
         for(PowerUpFood puf : pufoods){
             if(pacman.logicalPosition.x == puf.position.x && pacman.logicalPosition.y == puf.position.y)
                 puFoodToEat = puf;
+            
         }
         if(puFoodToEat!=null) {
             //SoundPlayer.play("pacman_eat.wav");
@@ -240,6 +245,7 @@ public class Game extends JPanel{
                     pufoods.remove(puFoodToEat);
                     scoreToAdd = 1;
                     drawScore = true;
+                    
             }
             //score ++;
             //scoreboard.setText("    Score : "+score);
@@ -251,7 +257,8 @@ public class Game extends JPanel{
                 g.undie();
             }
         }
-
+        
+      
         //Check Teleport
         for(TeleportTunnel tp : teleports) {
             if (pacman.logicalPosition.x == tp.getFrom().x && pacman.logicalPosition.y == tp.getFrom().y && pacman.activeMove == tp.getReqMove()) {
@@ -448,6 +455,10 @@ public class Game extends JPanel{
 
         teleports = md_backup.getTeleports();
         */
+    }
+    
+    public static void setFlagTrue() {
+    	flag = true;
     }
 
 

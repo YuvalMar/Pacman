@@ -117,7 +117,7 @@ public class Pacman implements KeyListener{
                                 return;
                             }
                         }
-                        pixelPosition.x ++;
+                        pixelPosition.x++;
                         break;
                     case LEFT:
                         if((pixelPosition.x <= 0)&&parentBoard.isCustom){

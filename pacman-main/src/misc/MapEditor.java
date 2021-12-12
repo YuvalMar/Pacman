@@ -3,6 +3,7 @@ package misc;
 import model.FancyButton;
 import model.Food;
 import model.PowerUpFood;
+import model.TeleportTunnel;
 import view.PacWindow;
 
 import javax.swing.*;
@@ -146,6 +147,18 @@ public class MapEditor extends JFrame {
             if(c == 'B'){
                 map[i][j] = 0;
                 customMap.setGhostBasePosition(new Point(i,j));
+            }
+            if(c == 'T'){
+                map[i][j] = 0;
+                int x = map[i].length -3;
+                customMap.getTeleports().add(new TeleportTunnel(0, j, 26, j, moveType.LEFT ));
+                customMap.getTeleports().add(new TeleportTunnel(26,j, 0, j, moveType.RIGHT ));
+            }
+            if(c == 'G'){
+                map[i][j] = 0;
+                int x = map[i].length -3;
+                customMap.getTeleports().add(new TeleportTunnel(i, 0, i, 28, moveType.UP ));
+                customMap.getTeleports().add(new TeleportTunnel(i,28, i, 0, moveType.DOWN ));
             }
             i++;
             if(c == '\n'){

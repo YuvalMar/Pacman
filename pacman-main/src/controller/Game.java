@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel{
@@ -205,7 +206,7 @@ public class Game extends JPanel{
             SoundPlayer.play("pacman_eat.wav");
             foods.remove(foodToEat);
             score ++;
-            scoreboard.setText("    Score : "+score);
+            scoreboard.setText("    Score : "+score + " Lives : " + " Level : ");
 
             if(foods.size() == 0){
                 siren.stop();
@@ -245,6 +246,18 @@ public class Game extends JPanel{
                     pufoods.remove(puFoodToEat);
                     scoreToAdd = 1;
                     drawScore = true;
+           
+                    HashMap<Ghost, moveType> ghostMove = new HashMap<Ghost,moveType>();
+                    for(Ghost g: ghosts) {
+                    	ghostMove.put(g, g.activeMove);
+                    	g.activeMove = moveType.NONE;
+                    }
+                    QuestionWindow qw = new QuestionWindow();
+                    windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
+                    for(Ghost g: ghosts) {
+                    	g.activeMove = ghostMove.get(g);
+                    }
+
                     
             }
             //score ++;
@@ -346,7 +359,7 @@ public class Game extends JPanel{
 
         //Draw Ghosts
         for(Ghost gh : ghosts){
-            g.drawImage(gh.getGhostImage(),10+gh.pixelPosition.x,10+gh.pixelPosition.y,null);
+            g.drawImage(gh.getGhostImage(), 10+gh.pixelPosition.x, 10+gh.pixelPosition.y,null);
         }
 
         if(clearScore){
@@ -367,7 +380,7 @@ public class Game extends JPanel{
             g.drawString(s.toString(), pacman.pixelPosition.x + 13, pacman.pixelPosition.y + 50);
             //drawScore = false;
             score += s;
-            scoreboard.setText("    Score : "+score);
+            scoreboard.setText("    Score : "+score + " Lives : " + " Level : ");
             clearScore = true;
 
         }
@@ -457,9 +470,7 @@ public class Game extends JPanel{
         */
     }
     
-    public static void setFlagTrue() {
-    	flag = true;
-    }
+  
 
 
 

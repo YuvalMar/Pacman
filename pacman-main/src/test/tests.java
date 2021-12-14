@@ -17,14 +17,14 @@ class tests {
 	//Test readJson() returns JSONArray
 	@Test
 	void test() {
-		JSONArray arrTest = new JSONArray();
-		assertTrue(SysData.readJson().getClass().equals(arrTest.getClass()));
+		ArrayList<Question> arrTest = new ArrayList<Question>();
+		assertTrue(SysData.getInstance().getQuestionsList().getClass().equals(arrTest.getClass()));
 	}
 	
 	//Test there are 3 questions in the JSON file
 	@Test
 	void test1() {
-		assertTrue(SysData.readJson().size() == 3);
+		assertTrue(SysData.getInstance().getQuestionsList().size() == 3);
 	}
 	
 	//Add new question and check the JSON file was updated
@@ -35,21 +35,21 @@ class tests {
 		answers.add("A2");
 		answers.add("A3");
 		answers.add("A4");
-		SysData.addQuestion("What?",answers, "A3", "4");
-		assertTrue(SysData.readJson().size() == 4);
+		SysData.getInstance().addQuestion("What?",answers, "A3", "4");
+		assertTrue(SysData.getInstance().getQuestionsList().size() == 4);
 	}
 	
 	//Delete a question and check it was deleted
 	@Test
 	void test3() {
-		SysData.deleteQuestion("What?");
-		assertTrue(SysData.readJson().size() == 3);
+		SysData.getInstance().deleteQuestion("What?");
+		assertTrue(SysData.getInstance().getQuestionsList().size() == 3);
 	}
 	
 	//Assert deleteQuestion() returns false if we try to delete a non existent questions from the file.
 	@Test
 	void test4() {
-		assertFalse(SysData.deleteQuestion("WHY?"));
+		assertFalse(SysData.getInstance().deleteQuestion("WHY?"));
 	}
 
 }

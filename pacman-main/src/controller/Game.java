@@ -41,6 +41,8 @@ public class Game extends JPanel{
     public boolean drawScore = false;
     public boolean clearScore = false; 
     public int scoreToAdd = 0;
+    public int lives;
+    public int bombPoints;
 
     public int score;
     public JLabel scoreboard;
@@ -56,7 +58,10 @@ public class Game extends JPanel{
 
     public MapData md_backup;
     public PacWindow windowParent;
+    
 
+    
+        
     public Game(JLabel scoreboard, MapData md, PacWindow pw){
         this.scoreboard = scoreboard;
         this.setDoubleBuffered(true);
@@ -69,6 +74,7 @@ public class Game extends JPanel{
 
         this.isCustom = md.isCustom();
         this.ghostBase = md.getGhostBasePosition();
+        this.lives = lives;
 
         //loadMap();
 
@@ -152,9 +158,9 @@ public class Game extends JPanel{
         pac6 = new LoopPlayer("pac6.wav");
         siren.start();
     }
-
+    
     public void collisionTest(){
-        Rectangle pr = new Rectangle(pacman.pixelPosition.x+13,pacman.pixelPosition.y+13,2,2);
+    	Rectangle pr = new Rectangle(pacman.pixelPosition.x+13,pacman.pixelPosition.y+13,2,2);
         Ghost ghostToRemove = null;
         for(Ghost g : ghosts){
             Rectangle gr = new Rectangle(g.pixelPosition.x,g.pixelPosition.y,28,28);
@@ -162,17 +168,23 @@ public class Game extends JPanel{
             if(pr.intersects(gr)){
                 if(!g.isDead()) {
                     if (!g.isWeak()) {
-                        //Game Over
-                        siren.stop();
-                        SoundPlayer.play("pacman_lose.wav");
-                        pacman.moveTimer.stop();
-                        pacman.animTimer.stop();
-                        g.moveTimer.stop();
-                        isGameOver = true;
-                        scoreboard.setText("    Press R to try again !");
-                        //scoreboard.setForeground(Color.red);
-                        break;
-                    } else {
+                    	if(this.lives<2){
+	                        //Game Over
+	                    	siren.stop();
+	                        SoundPlayer.play("pacman_lose.wav");
+	                        pacman.moveTimer.stop();
+	                        pacman.animTimer.stop();
+	                        g.moveTimer.stop();
+	                        isGameOver = true;
+	                        scoreboard.setText("    Press R to try again !");
+	                        //scoreboard.setForeground(Color.red);
+	                        break;
+                    	} else {
+                    		lives--;
+                    		
+                    	}
+                    }
+                    	else {
                         //Eat Ghost
                         SoundPlayer.play("pacman_eatghost.wav");
                         //getGraphics().setFont(new Font("Arial",Font.BOLD,20));
@@ -191,9 +203,9 @@ public class Game extends JPanel{
             ghosts.remove(ghostToRemove);
         }
     }
-
+    
     public void update(){
-
+    	
         Food foodToEat = null;
         //Check food eat
         for(Food f : foods){
@@ -206,7 +218,7 @@ public class Game extends JPanel{
             SoundPlayer.play("pacman_eat.wav");
             foods.remove(foodToEat);
             score ++;
-            scoreboard.setText("    Score : "+score + " Lives : " + " Level : ");
+            scoreboard.setText("    Score : "+score + " Lives : "+lives + " Level : ");
 
             if(foods.size() == 0){
                 siren.stop();
@@ -231,7 +243,8 @@ public class Game extends JPanel{
             //SoundPlayer.play("pacman_eat.wav");
             switch(puFoodToEat.type) {
                 case 0:
-                    //PACMAN 6
+                    //Bomb Point
+                	bombPoints++;
                     pufoods.remove(puFoodToEat);
                     siren.stop();
                     mustReactivateSiren = true;
@@ -241,27 +254,44 @@ public class Game extends JPanel{
                     }
                     scoreToAdd = 0;
                     break;
+                //Question Item
                 default:
                     SoundPlayer.play("pacman_eatfruit.wav");
                     pufoods.remove(puFoodToEat);
-                    scoreToAdd = 1;
                     drawScore = true;
            
-                    HashMap<Ghost, moveType> ghostMove = new HashMap<Ghost,moveType>();
-                    for(Ghost g: ghosts) {
-                    	ghostMove.put(g, g.activeMove);
-                    	g.activeMove = moveType.NONE;
-                    }
+//                    HashMap<Ghost, moveType> ghostMove = new HashMap<Ghost,moveType>();
+//                    for(Ghost g: ghosts) {
+//                    	ghostMove.put(g, g.activeMove);
+//                    	g.activeMove = moveType.NONE;
+//                    }
+                    freeze();
                     QuestionWindow qw = new QuestionWindow();
                     windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
-                    for(Ghost g: ghosts) {
-                    	g.activeMove = ghostMove.get(g);
-                    }
-
+                    unfreeze();
                     
+                    //Check if the answer is correct and update scoreToAdd accordingly
+                    if(qw.getCorrect()) {
+                    	if(qw.getLevel() == 1)
+                    		scoreToAdd=1;
+                    	if(qw.getLevel() ==2)
+                    		scoreToAdd=2;
+                    	else
+                    		scoreToAdd=3;
+                    }else {
+                    	if(qw.getLevel() == 1)
+                    		scoreToAdd=-10;
+                    	if(qw.getLevel() ==2)
+                    		scoreToAdd=-20;
+                    	else
+                    		scoreToAdd=-30;
+                    }
             }
-            //score ++;
-            //scoreboard.setText("    Score : "+score);
+            
+//            if(score > 50 && score <101)
+//            	this.md_backup = PacWindow.getMapFromResource();
+            score+=scoreToAdd;
+            scoreboard.setText("    Score : "+score +" Lives : "+lives + " Level : ");
         }
 
         //Check Ghost Undie
@@ -380,7 +410,7 @@ public class Game extends JPanel{
             g.drawString(s.toString(), pacman.pixelPosition.x + 13, pacman.pixelPosition.y + 50);
             //drawScore = false;
             score += s;
-            scoreboard.setText("    Score : "+score + " Lives : " + " Level : ");
+            scoreboard.setText("    Score : "+score +" Lives : "+lives + " Level : ");
             clearScore = true;
 
         }
@@ -413,12 +443,28 @@ public class Game extends JPanel{
             super.processEvent(ae);
         }
     }
-
+    
+    public void freeze() {
+        pacman.moveTimer.stop();
+        pacman.animTimer.stop();
+        for(Ghost g: ghosts) {
+        	g.moveTimer.stop();
+        	g.animTimer.stop();
+        }
+    }
+    public void unfreeze() {
+        pacman.moveTimer.start();
+        pacman.animTimer.start();
+        for(Ghost g: ghosts) {
+        	g.moveTimer.start();
+        	g.animTimer.start();
+        }
+    }
+       
     public void restart(){
 
         siren.stop();
-
-        new PacWindow("LESH");
+        new PacWindow("A");
         windowParent.dispose();
 
         /*

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -30,6 +31,8 @@ public class QuestionWindow extends JDialog {
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_6;
+	public boolean correct =false;
+	public int level = 0;
 	public QuestionWindow() {
 		
         setSize(600,300);
@@ -40,14 +43,16 @@ public class QuestionWindow extends JDialog {
         buttonsC.setBackground(Color.black);
         
         getContentPane().add(buttonsC);
-         
-        Question q = SysData.getInstance().getQuestionsList().get(1);
+        
+        int randumNum = ThreadLocalRandom.current().nextInt(0, 3);
+        Question q = SysData.getInstance().getQuestionsList().get(randumNum);
         buttonsC.setLayout(null);
         JLabel qbody = new JLabel(q.getqBody());
         qbody.setHorizontalAlignment(SwingConstants.CENTER);
         qbody.setFont(new Font("Tahoma", Font.PLAIN, 20));
         qbody.setForeground(Color.ORANGE);
         qbody.setBounds(193, 13, 198, 41);
+        setLevel(Integer.parseInt(q.getLevel()));
         buttonsC.add(qbody);
         
         
@@ -55,25 +60,65 @@ public class QuestionWindow extends JDialog {
         FancyButton answer1 = new FancyButton(q.getAnswers().get(0));
         answer1.setHorizontalAlignment(SwingConstants.CENTER);
         answer1.setBounds(219, 67, 116, 22);
+        answer1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setCorrect(answer1.getText().equals(q.getCorrectAnswer()));
+                dispose();
+            }
+        });
         buttonsC.add(answer1);
         
         FancyButton answer2 = new FancyButton(q.getAnswers().get(1));
         answer2.setHorizontalAlignment(SwingConstants.CENTER);
         answer2.setBounds(219, 102, 116, 22);
+        answer2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setCorrect(answer2.getText().equals(q.getCorrectAnswer()));
+                dispose();
+            }
+        });
         buttonsC.add(answer2);
         
         FancyButton answer3 = new FancyButton(q.getAnswers().get(2));
         answer3.setHorizontalAlignment(SwingConstants.CENTER);
         answer3.setBounds(219, 137, 116, 22);
+        answer3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setCorrect(answer3.getText().equals(q.getCorrectAnswer()));
+                dispose();
+            }
+        });
         buttonsC.add(answer3);
         
         FancyButton answer4 = new FancyButton(q.getAnswers().get(3));
         answer4.setHorizontalAlignment(SwingConstants.CENTER);
         answer4.setBounds(219, 172, 116, 22);
+        answer4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setCorrect(answer4.getText().equals(q.getCorrectAnswer()));
+                dispose();
+            }
+        });
         buttonsC.add(answer4);
 
         this.setModalityType(ModalityType.APPLICATION_MODAL);
         setVisible(true);    
+	}
+	private void setCorrect(boolean c) {
+		this.correct = c;
+	}
+	public boolean getCorrect() {
+		return this.correct;
+	}
+	public void setLevel(int l) {
+		this.level = l;
+	}
+	public int getLevel() {
+		return this.level;
 	}
 
 }

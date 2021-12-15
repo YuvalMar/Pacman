@@ -7,7 +7,7 @@ import java.awt.*;
 //Finds Path Between two Maze Points Using Breadth-Frist Search (BFS)
 public class BFSFinder {
 
-    int[][] map;
+    public static int[][] map;
     int mx;
     int my;
 

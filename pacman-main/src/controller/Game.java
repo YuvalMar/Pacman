@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel{
@@ -43,6 +44,7 @@ public class Game extends JPanel{
     public int scoreToAdd = 0;
     public int lives;
     public int bombPoints;
+    public int level;
 
     public int score;
     public JLabel scoreboard;
@@ -58,6 +60,7 @@ public class Game extends JPanel{
 
     public MapData md_backup;
     public PacWindow windowParent;
+    public boolean map2 = false;
     
 
     
@@ -74,7 +77,6 @@ public class Game extends JPanel{
 
         this.isCustom = md.isCustom();
         this.ghostBase = md.getGhostBasePosition();
-        this.lives = lives;
 
         //loadMap();
 
@@ -287,12 +289,40 @@ public class Game extends JPanel{
                     		scoreToAdd=-30;
                     }
             }
-            
-//            if(score > 50 && score <101)
-//            	this.md_backup = PacWindow.getMapFromResource();
+          
             score+=scoreToAdd;
             scoreboard.setText("    Score : "+score +" Lives : "+lives + " Level : ");
+            
+            if(score < 10) 
+            	this.level = 1;
+            else if(score>9 && score<101) 
+            	this.level = 2;
+            else if(score >100 && score <151)
+            	this.level = 3;
+            else
+            	this.level =4;
+             if(this.level == 2 && !map2) {
+                MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
+                adjustMap(map1);
+                this.map = map1.getMap();
+                for(Ghost g: ghosts)
+                	g.parentBoard = this;
+                map2 = true;
+                BFSFinder.map = map1.getMap();
+                pacman.parentBoard = this;
+            }
+            else if(this.level !=2 && map2) {
+            	System.out.println("SAD");
+                MapData map1 = getMapFromResource("/resources/maps/start_map.txt");
+                adjustMap(map1);
+                this.map = map1.getMap();
+                map2=false;
+                BFSFinder.map = map1.getMap();
+                pacman.parentBoard = this;
+            }
+            
         }
+        
 
         //Check Ghost Undie
         for(Ghost g:ghosts){
@@ -327,9 +357,6 @@ public class Game extends JPanel{
             }
 
         }
-
-
-
     }
 
 
@@ -406,7 +433,7 @@ public class Game extends JPanel{
             //System.out.println("must draw score !");
             g.setFont(new Font("Arial",Font.BOLD,15));
             g.setColor(Color.yellow);
-            Integer s = scoreToAdd*100;
+            Integer s = scoreToAdd;
             g.drawString(s.toString(), pacman.pixelPosition.x + 13, pacman.pixelPosition.y + 50);
             //drawScore = false;
             score += s;
@@ -517,7 +544,181 @@ public class Game extends JPanel{
     }
     
   
+    //TESTTESTTEST
+    public int[][] loadMap(int mx, int my, String relPath) {
+        try {
+            Scanner scn = new Scanner(this.getClass().getResourceAsStream(relPath));
+            int[][] map;
+            map = new int[mx][my];
+            for (int y = 0; y < my; y++) {
+                for (int x = 0; x < mx; x++) {
+                    map[x][y] = scn.nextInt();
+                }
+            }
+            return map;
+        } catch (Exception e) {
+            System.err.println("Error Reading Map File !");
+        }
+        return null;
+    }
 
+    public MapData getMapFromResource(String relPath) {
+        String mapStr = "";
+        try {
+            Scanner scn = new Scanner(this.getClass().getResourceAsStream(relPath));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while (scn.hasNextLine()) {
+                line = scn.nextLine();
+                sb.append(line).append('\n');
+            }
+            mapStr = sb.toString();
+        } catch (Exception e) {
+            System.err.println("Error Reading Map File !");
+        }
+        if ("".equals(mapStr)) {
+            System.err.println("Map is Empty !");
+        }
+        return MapEditor.compileMap(mapStr);
+    }
+
+    //Dynamically Generate Map Segments
+    public void adjustMap(MapData mapd) {
+        int[][] map = mapd.getMap();
+        int mx = mapd.getX();
+        int my = mapd.getY();
+        for (int y = 0; y < my; y++) {
+            for (int x = 0; x < mx; x++) {
+                boolean l = false;
+                boolean r = false;
+                boolean t = false;
+                boolean b = false;
+                boolean tl = false;
+                boolean tr = false;
+                boolean bl = false;
+                boolean br = false;
+
+
+                if (map[x][y] > 0 && map[x][y] < 26) {
+                    int mustSet = 0;
+                    //LEFT
+                    if (x > 0 && map[x - 1][y] > 0 && map[x - 1][y] < 26) {
+                        l = true;
+                    }
+                    //RIGHT
+                    if (x < mx - 1 && map[x + 1][y] > 0 && map[x + 1][y] < 26) {
+                        r = true;
+                    }
+                    //TOP
+                    if (y > 0 && map[x][y - 1] > 0 && map[x][y - 1] < 26) {
+                        t = true;
+                    }
+                    //Bottom
+                    if (y < my - 1 && map[x][y + 1] > 0 && map[x][y + 1] < 26) {
+                        b = true;
+                    }
+                    //TOP LEFT
+                    if (x > 0 && y > 0 && map[x - 1][y - 1] > 0 && map[x - 1][y - 1] < 26) {
+                        tl = true;
+                    }
+                    //TOP RIGHT
+                    if (x < mx - 1 && y > 0 && map[x + 1][y - 1] > 0 && map[x + 1][y - 1] < 26) {
+                        tr = true;
+                    }
+                    //Bottom LEFT
+                    if (x > 0 && y < my - 1 && map[x - 1][y + 1] > 0 && map[x - 1][y + 1] < 26) {
+                        bl = true;
+                    }
+                    //Bottom RIGHT
+                    if (x < mx - 1 && y < my - 1 && map[x + 1][y + 1] > 0 && map[x + 1][y + 1] < 26) {
+                        br = true;
+                    }
+
+                    //Decide Image to View
+                    if (!r && !l && !t && !b) {
+                        mustSet = 23;
+                    }
+                    if (r && !l && !t && !b) {
+                        mustSet = 22;
+                    }
+                    if (!r && l && !t && !b) {
+                        mustSet = 25;
+                    }
+                    if (!r && !l && t && !b) {
+                        mustSet = 21;
+                    }
+                    if (!r && !l && !t && b) {
+                        mustSet = 19;
+                    }
+                    if (r && l && !t && !b) {
+                        mustSet = 24;
+                    }
+                    if (!r && !l && t && b) {
+                        mustSet = 20;
+                    }
+                    if (r && !l && t && !b && !tr) {
+                        mustSet = 11;
+                    }
+                    if (r && !l && t && !b && tr) {
+                        mustSet = 2;
+                    }
+                    if (!r && l && t && !b && !tl) {
+                        mustSet = 12;
+                    }
+                    if (!r && l && t && !b && tl) {
+                        mustSet = 3;
+                    }
+                    if (r && !l && !t && b && br) {
+                        mustSet = 1;
+                    }
+                    if (r && !l && !t && b && !br) {
+                        mustSet = 10;
+                    }
+                    if (!r && l && !t && b && bl) {
+                        mustSet = 4;
+                    }
+                    if (r && !l && t && b && !tr) {
+                        mustSet = 15;
+                    }
+                    if (r && !l && t && b && tr) {
+                        mustSet = 6;
+                    }
+                    if (!r && l && t && b && !tl) {
+                        mustSet = 17;
+                    }
+                    if (!r && l && t && b && tl) {
+                        mustSet = 8;
+                    }
+                    if (r && l && !t && b && !br) {
+                        mustSet = 14;
+                    }
+                    if (r && l && !t && b && br) {
+                        mustSet = 5;
+                    }
+                    if (r && l && t && !b && !tr) {
+                        mustSet = 16;
+                    }
+                    if (r && l && t && !b && tr) {
+                        mustSet = 7;
+                    }
+                    if (!r && l && !t && b && !bl) {
+                        mustSet = 13;
+                    }
+                    if (r && l && t && b && br && tl) {
+                        mustSet = 9;
+                    }
+                    if (r && l && t && b && !br && !tl) {
+                        mustSet = 18;
+                    }
+
+                    //System.out.println("MAP SEGMENT : " + mustSet);
+                    map[x][y] = mustSet;
+                }
+                mapd.setMap(map);
+            }
+        }
+        System.out.println("Map Adjust OK !");
+    }
 
 
 

@@ -71,7 +71,7 @@ public abstract class Ghost {
 
     public BFSFinder baseReturner;
 
-    protected Game parentBoard;
+    public Game parentBoard;
 
     public Ghost(int x, int y, Game pb, int ghostDelay) {
 

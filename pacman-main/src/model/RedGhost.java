@@ -37,31 +37,31 @@ public class RedGhost extends Ghost {
         }
     }
 
-    moveType pendMove = moveType.UP;
-
-    //find closest path using BFS
-    @Override
-    public moveType getMoveAI(){
-        if(isPending){
-            if(isStuck){
-                if(pendMove == moveType.UP){
-                    pendMove = moveType.DOWN;
-                }else if(pendMove == moveType.DOWN){
-                    pendMove = moveType.UP;
-                }
-                return pendMove;
-            }else{
-                return pendMove;
-            }
-        }
-        if(bfs==null)
-            bfs = new BFSFinder(parentBoard);
-        if(isDead) {
-            return baseReturner.getMove(logicalPosition.x,logicalPosition.y, parentBoard.ghostBase.x,parentBoard.ghostBase.y);
-        }else{
-            return bfs.getMove(logicalPosition.x,logicalPosition.y,parentBoard.pacman.logicalPosition.x,parentBoard.pacman.logicalPosition.y);
-        }
-    }
+//    moveType pendMove = moveType.UP;
+//
+//    //find closest path using BFS
+//    @Override
+//    public moveType getMoveAI(){
+//        if(isPending){
+//            if(isStuck){
+//                if(pendMove == moveType.UP){
+//                    pendMove = moveType.DOWN;
+//                }else if(pendMove == moveType.DOWN){
+//                    pendMove = moveType.UP;
+//                }
+//                return pendMove;
+//            }else{
+//                return pendMove;
+//            }
+//        }
+//        if(bfs==null)
+//            bfs = new BFSFinder(parentBoard);
+//        if(isDead) {
+//            return baseReturner.getMove(logicalPosition.x,logicalPosition.y, parentBoard.ghostBase.x,parentBoard.ghostBase.y);
+//        }else{
+//            return bfs.getMove(logicalPosition.x,logicalPosition.y,parentBoard.pacman.logicalPosition.x,parentBoard.pacman.logicalPosition.y);
+//        }
+//    }
 
 
 }

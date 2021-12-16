@@ -45,16 +45,7 @@ public class Pacman implements KeyListener{
 
         activeMove = moveType.NONE;
         todoMove = moveType.NONE;
-
-        try {
-            pac[0] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac0.png"));
-            pac[1] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac1.png"));
-            pac[2] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac2.png"));
-            pac[3] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac3.png"));
-            pac[4] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac4.png"));
-        }catch(IOException e){
-            System.err.println("Cannot Read Images !");
-        }
+        setPacImage();
 
         //animation timer
         animAL = new ActionListener() {
@@ -70,7 +61,8 @@ public class Pacman implements KeyListener{
 
 
         moveAL = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            @SuppressWarnings("incomplete-switch")
+			public void actionPerformed(ActionEvent evt) {
 
                 //update logical position
                 if((pixelPosition.x % 28 == 0) && (pixelPosition.y % 28 == 0)){
@@ -187,6 +179,30 @@ public class Pacman implements KeyListener{
             }
         }
         return false;
+    }
+    public void setPacImage() {
+        try {
+            pac[0] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac0.png"));
+            pac[1] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac1.png"));
+            pac[2] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac2.png"));
+            pac[3] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac3.png"));
+            pac[4] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac4.png"));
+        }catch(IOException e){
+            System.err.println("Cannot Read Images !");
+        }
+    }
+    
+    public void setBombImage() {
+        try {
+            pac[0] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac5.png"));
+            pac[1] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac6.png"));
+            pac[2] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac7.png"));
+            pac[3] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac8.png"));
+            pac[4] = ImageIO.read(this.getClass().getResource("../resources/images/pac/pac9.png"));
+        }catch(IOException e){
+            System.err.println("Cannot Read Images !");
+        }
+    	
     }
 
     public Image getPacmanImage(){

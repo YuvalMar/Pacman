@@ -25,7 +25,7 @@ public class PacWindow extends JFrame  {
         JLabel scoreboard = new JLabel("    Score : 0    Lives : 3");
         scoreboard.setForeground(new Color(255, 243, 36));
 
-        MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
+        MapData map1 = getMapFromResource("/resources/maps/start_map.txt");
         adjustMap(map1);
 
         Game pb = new Game(scoreboard, map1, this);

@@ -11,11 +11,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
-public class Game extends JPanel{
+
+public class Game extends JPanel {
 
 
     public Timer redrawTimer;
@@ -45,6 +44,7 @@ public class Game extends JPanel{
     public int lives;
     public int bombPoints;
     public int level;
+    public boolean pacmanBomb = false;
 
     public int score;
     public JLabel scoreboard;
@@ -65,11 +65,13 @@ public class Game extends JPanel{
 
     
         
-    public Game(JLabel scoreboard, MapData md, PacWindow pw){
+    @SuppressWarnings("serial")
+	public Game(JLabel scoreboard, MapData md, PacWindow pw){
         this.scoreboard = scoreboard;
         this.setDoubleBuffered(true);
         md_backup = md;
         windowParent = pw;
+        this.lives = 3;
 
         m_x = md.getX();
         m_y = md.getY();
@@ -159,6 +161,27 @@ public class Game extends JPanel{
         siren = new LoopPlayer("siren.wav");
         pac6 = new LoopPlayer("pac6.wav");
         siren.start();
+        InputMap im = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getActionMap();
+        im.put(KeyStroke.getKeyStroke("SPACE"), "space");
+        am.put("space", new AbstractAction() {
+            public void actionPerformed(ActionEvent evt) {
+                if(getBombPoints()>0) {
+                	for(Ghost g: ghosts) {
+                		if(isGhostNearby(g)) {
+                			System.out.println("GHOST");
+                			g.die();
+                			setBombPoints(getBombPoints()-1);
+                		}else
+                			System.out.println("NO GHOST");
+                	}
+                	
+                }
+                else
+                	System.out.println("NO");
+            }
+        });
+       
     }
     
     public void collisionTest(){
@@ -183,7 +206,21 @@ public class Game extends JPanel{
 	                        break;
                     	} else {
                     		lives--;
-                    		
+                    		ghosts = new ArrayList<Ghost>();
+                            for(GhostData gd : md_backup.getGhostsData()){
+                                switch(gd.getType()) {
+                                    case RED:
+                                        ghosts.add(new RedGhost(gd.getX(), gd.getY(), this));
+                                        break;
+                                    case PINK:
+                                        ghosts.add(new PinkGhost(gd.getX(), gd.getY(), this));
+                                        break;
+                                    case CYAN:
+                                        ghosts.add(new CyanGhost(gd.getX(), gd.getY(), this));
+                                        break;
+                                }
+                            }
+                          
                     	}
                     }
                     	else {
@@ -248,13 +285,7 @@ public class Game extends JPanel{
                     //Bomb Point
                 	bombPoints++;
                     pufoods.remove(puFoodToEat);
-                    siren.stop();
-                    mustReactivateSiren = true;
-                    pac6.start();
-                    for (Ghost g : ghosts) {
-                        g.weaken();
-                    }
-                    scoreToAdd = 0;
+
                     break;
                 //Question Item
                 default:
@@ -301,6 +332,7 @@ public class Game extends JPanel{
             	this.level = 3;
             else
             	this.level =4;
+            
              if(this.level == 2 && !map2) {
                 MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
                 adjustMap(map1);
@@ -323,6 +355,15 @@ public class Game extends JPanel{
             
         }
         
+        if(bombPoints>0 && !pacmanBomb) { 
+        	pacman.setBombImage();
+        	pacmanBomb = true;
+        }
+        
+        else if(bombPoints<1 && pacmanBomb) {
+        	pacman.setPacImage();
+        	pacmanBomb = false;
+        }
 
         //Check Ghost Undie
         for(Ghost g:ghosts){
@@ -542,6 +583,12 @@ public class Game extends JPanel{
         teleports = md_backup.getTeleports();
         */
     }
+    public void setBombPoints(int num) {
+    	this.bombPoints = num;
+    }
+    public int getBombPoints() {
+    	return this.bombPoints;
+    }
     
   
     //TESTTESTTEST
@@ -719,7 +766,14 @@ public class Game extends JPanel{
         }
         System.out.println("Map Adjust OK !");
     }
-
-
+    
+    public boolean isGhostNearby(Ghost g) {
+    	
+    	Rectangle pr = new Rectangle(pacman.pixelPosition.x+13,pacman.pixelPosition.y+13,50,50);
+    	Rectangle prMinus = new Rectangle(pacman.pixelPosition.x-13,pacman.pixelPosition.y-13,50,50);
+        Rectangle gr = new Rectangle(g.pixelPosition.x,g.pixelPosition.y,28,28);
+        return pr.intersects(gr) || prMinus.intersects(gr);
+    			
+    }
 
 }

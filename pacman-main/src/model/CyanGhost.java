@@ -37,30 +37,30 @@ public class CyanGhost extends Ghost {
         }
     }
 
-    moveType lastCMove;
-    moveType pendMove = moveType.UP;
-
-    @Override
-    public moveType getMoveAI(){
-        if(isPending){
-            if(isStuck){
-                if(pendMove == moveType.UP){
-                    pendMove = moveType.DOWN;
-                }else if(pendMove == moveType.DOWN){
-                    pendMove = moveType.UP;
-                }
-                return pendMove;
-            }else{
-                return pendMove;
-            }
-        }
-        if(isDead) {
-            return baseReturner.getMove(logicalPosition.x,logicalPosition.y, parentBoard.ghostBase.x,parentBoard.ghostBase.y);
-        }else {
-            ArrayList<moveType> pm = getPossibleMoves();
-            int i = ThreadLocalRandom.current().nextInt(pm.size());
-            lastCMove = pm.get(i);
-            return lastCMove;
-        }
-    }
+//    moveType lastCMove;
+//    moveType pendMove = moveType.UP;
+//
+//    @Override
+//    public moveType getMoveAI(){
+//        if(isPending){
+//            if(isStuck){
+//                if(pendMove == moveType.UP){
+//                    pendMove = moveType.DOWN;
+//                }else if(pendMove == moveType.DOWN){
+//                    pendMove = moveType.UP;
+//                }
+//                return pendMove;
+//            }else{
+//                return pendMove;
+//            }
+//        }
+//        if(isDead) {
+//            return baseReturner.getMove(logicalPosition.x,logicalPosition.y, parentBoard.ghostBase.x,parentBoard.ghostBase.y);
+//        }else {
+//            ArrayList<moveType> pm = getPossibleMoves();
+//            int i = ThreadLocalRandom.current().nextInt(pm.size());
+//            lastCMove = pm.get(i);
+//            return lastCMove;
+//        }
+//    }
 }

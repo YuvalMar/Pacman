@@ -39,6 +39,7 @@ public abstract class Ghost {
 
     protected boolean isWeak = false;
     protected boolean isDead = false;
+    BFSFinder bfs;
 
     public boolean isWeak() {
         return isWeak;
@@ -242,12 +243,32 @@ public abstract class Ghost {
         activeMove = getMoveAI();
 
     }
-
+    moveType pendMove = moveType.UP;
     //load Images from Resource
     public abstract void loadImages();
 
     //get Move Based on AI
-    public abstract moveType getMoveAI();
+    public moveType getMoveAI() {
+        if(isPending){
+            if(isStuck){
+                if(pendMove == moveType.UP){
+                    pendMove = moveType.DOWN;
+                }else if(pendMove == moveType.DOWN){
+                    pendMove = moveType.UP;
+                }
+                return pendMove;
+            }else{
+                return pendMove;
+            }
+        }
+        if(bfs==null)
+            bfs = new BFSFinder(parentBoard);
+        if(isDead) {
+            return baseReturner.getMove(logicalPosition.x,logicalPosition.y, parentBoard.ghostBase.x,parentBoard.ghostBase.y);
+        }else{
+            return bfs.getMove(logicalPosition.x,logicalPosition.y,parentBoard.pacman.logicalPosition.x,parentBoard.pacman.logicalPosition.y);
+        }
+    }
 
     //get possible Moves
     public ArrayList<moveType> getPossibleMoves(){

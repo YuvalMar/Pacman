@@ -1,7 +1,4 @@
-/controller/
-/exceptions/
-/misc/
-/model/
-/test/
-/view/
 /resources/
+/controller/
+/view/
+/model/

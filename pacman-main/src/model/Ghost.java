@@ -39,7 +39,7 @@ public abstract class Ghost {
 
     protected boolean isWeak = false;
     protected boolean isDead = false;
-    BFSFinder bfs;
+    public BFSFinder bfs;
 
     public boolean isWeak() {
         return isWeak;
@@ -53,6 +53,7 @@ public abstract class Ghost {
     public Image ghostImg;
     public int activeImage = 0;
     public int addFactor = 1;
+    public int level = 1;
 
     public Point pixelPosition;
     public Point logicalPosition;
@@ -84,6 +85,7 @@ public abstract class Ghost {
         activeMove = moveType.RIGHT;
 
         ghostNormalDelay = ghostDelay;
+        
 
         loadImages();
 
@@ -140,8 +142,6 @@ public abstract class Ghost {
                         }
                         parentBoard.dispatchEvent(new ActionEvent(this,Messages.UPDATE,null));
                     }
-
-
                     activeMove = getMoveAI();
                     isStuck = true;
 
@@ -165,7 +165,7 @@ public abstract class Ghost {
                         if((logicalPosition.x+1 < parentBoard.m_x) && (parentBoard.map[logicalPosition.x+1][logicalPosition.y]>0) && ((parentBoard.map[logicalPosition.x+1][logicalPosition.y]<26)||isPending)){
                             return;
                         }
-                        pixelPosition.x ++;
+                        pixelPosition.x +=level;
                         break;
                     case LEFT:
                         if(pixelPosition.x <= 0){
@@ -174,7 +174,7 @@ public abstract class Ghost {
                         if((logicalPosition.x-1 >= 0) && (parentBoard.map[logicalPosition.x-1][logicalPosition.y]>0) && ((parentBoard.map[logicalPosition.x-1][logicalPosition.y]<26)||isPending)){
                             return;
                         }
-                        pixelPosition.x --;
+                        pixelPosition.x -=level;
                         break;
                     case UP:
                         if(pixelPosition.y <= 0){
@@ -183,7 +183,7 @@ public abstract class Ghost {
                         if((logicalPosition.y-1 >= 0) && (parentBoard.map[logicalPosition.x][logicalPosition.y-1]>0) && ((parentBoard.map[logicalPosition.x][logicalPosition.y-1]<26)||isPending)){
                             return;
                         }
-                        pixelPosition.y--;
+                        pixelPosition.y-=level;
                         break;
                     case DOWN:
                         if(pixelPosition.y >= (parentBoard.m_y-1) * 28){
@@ -192,7 +192,7 @@ public abstract class Ghost {
                         if((logicalPosition.y+1 < parentBoard.m_y) && (parentBoard.map[logicalPosition.x][logicalPosition.y+1]>0) && ((parentBoard.map[logicalPosition.x][logicalPosition.y+1]<26)||isPending)){
                             return;
                         }
-                        pixelPosition.y ++;
+                        pixelPosition.y +=level;
                         break;
                 }
 
@@ -255,6 +255,11 @@ public abstract class Ghost {
                     pendMove = moveType.DOWN;
                 }else if(pendMove == moveType.DOWN){
                     pendMove = moveType.UP;
+                }else if(pendMove == moveType.LEFT){
+                    pendMove = moveType.RIGHT;
+                }
+                else if(pendMove == moveType.RIGHT){
+                    pendMove = moveType.LEFT;
                 }
                 return pendMove;
             }else{

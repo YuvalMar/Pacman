@@ -14,7 +14,7 @@ public class RedGhost extends Ghost {
     BFSFinder bfs;
 
     public RedGhost(int x, int y, Game pb){
-        super(x,y,pb,12);
+        super(x,y,pb,3);
     }
 
     @Override

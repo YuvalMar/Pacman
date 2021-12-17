@@ -27,6 +27,7 @@ public class Pacman implements KeyListener{
     public Image[] pac;
     public int activeImage = 0;
     public int addFactor = 1;
+    public int level = 1;
 
     public Point pixelPosition;
     public Point logicalPosition;
@@ -109,7 +110,7 @@ public class Pacman implements KeyListener{
                                 return;
                             }
                         }
-                        pixelPosition.x++;
+                        pixelPosition.x+=level;
                         break;
                     case LEFT:
                         if((pixelPosition.x <= 0)&&parentBoard.isCustom){
@@ -123,7 +124,7 @@ public class Pacman implements KeyListener{
                                 return;
                             }
                         }
-                        pixelPosition.x--;
+                        pixelPosition.x-=level;
                         break;
                     case UP:
                         if((pixelPosition.y <= 0)&&parentBoard.isCustom){
@@ -137,7 +138,7 @@ public class Pacman implements KeyListener{
                                 return;
                             }
                         }
-                        pixelPosition.y--;
+                        pixelPosition.y-=level;
                         break;
                     case DOWN:
                         if((pixelPosition.y >= (parentBoard.m_y-1) * 28)&&parentBoard.isCustom){
@@ -151,7 +152,7 @@ public class Pacman implements KeyListener{
                                 return;
                             }
                         }
-                        pixelPosition.y ++;
+                        pixelPosition.y +=level;
                         break;
                 }
 
@@ -160,7 +161,7 @@ public class Pacman implements KeyListener{
 
             }
         };
-        moveTimer = new Timer(9,moveAL);
+        moveTimer = new Timer(15,moveAL);
         moveTimer.start();
 
     }

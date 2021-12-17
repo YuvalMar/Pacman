@@ -40,6 +40,8 @@ public class Game extends JPanel {
     public boolean isWin = false;
     public boolean drawScore = false;
     public boolean clearScore = false; 
+    public boolean flag = true;
+    public boolean flag1 = true;
     public int scoreToAdd = 0;
     public int lives;
     public int bombPoints;
@@ -119,6 +121,7 @@ public class Game extends JPanel {
                     break;
             }
         }
+        
 
         teleports = md.getTeleports();
 
@@ -220,7 +223,21 @@ public class Game extends JPanel {
                                         break;
                                 }
                             }
+                            pacman.activeMove = moveType.NONE;
+                            pacman.pixelPosition.x = 28*md_backup.getPacmanPosition().x;
+                            pacman.pixelPosition.y = 28*md_backup.getPacmanPosition().y;
+                            pacman.logicalPosition.x = md_backup.getPacmanPosition().x;
+                            pacman.logicalPosition.y = md_backup.getPacmanPosition().y;
+                            
+                            		
+                            for(Ghost gs:ghosts) {
+                            	gs.parentBoard = this;
+                            	gs.bfs = new BFSFinder(this);
+                            	if(this.level==4)
+                            		gs.level=2;		
+                            }
                           
+                            scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
                     	}
                     }
                     	else {
@@ -257,7 +274,7 @@ public class Game extends JPanel {
             SoundPlayer.play("pacman_eat.wav");
             foods.remove(foodToEat);
             score ++;
-            scoreboard.setText("    Score : "+score + " Lives : "+lives + " Level : ");
+            scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
 
             if(foods.size() == 0){
                 siren.stop();
@@ -293,11 +310,6 @@ public class Game extends JPanel {
                     pufoods.remove(puFoodToEat);
                     drawScore = true;
            
-//                    HashMap<Ghost, moveType> ghostMove = new HashMap<Ghost,moveType>();
-//                    for(Ghost g: ghosts) {
-//                    	ghostMove.put(g, g.activeMove);
-//                    	g.activeMove = moveType.NONE;
-//                    }
                     freeze();
                     QuestionWindow qw = new QuestionWindow();
                     windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
@@ -319,41 +331,67 @@ public class Game extends JPanel {
                     	else
                     		scoreToAdd=-30;
                     }
+            }  
+        }
+        
+        if(score < 10) 
+        	this.level = 1;
+        else if(score>9 && score<20) 
+        	this.level = 2;
+        else if(score >19 && score <30)
+        	this.level = 3;
+        else if(score>29)
+        	this.level =4;
+        
+         if(this.level == 2 && !map2 ) {
+            MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
+            adjustMap(map1);
+            this.map = map1.getMap();
+            BFSFinder.map = map1.getMap();
+            for(Ghost g: ghosts) {
+            	g.parentBoard = this;
+            	g.bfs = new BFSFinder(this);
+            	if(g.level==2)
+        			g.level=1;
             }
-          
-            score+=scoreToAdd;
-            scoreboard.setText("    Score : "+score +" Lives : "+lives + " Level : ");
-            
-            if(score < 10) 
-            	this.level = 1;
-            else if(score>9 && score<101) 
-            	this.level = 2;
-            else if(score >100 && score <151)
-            	this.level = 3;
-            else
-            	this.level =4;
-            
-             if(this.level == 2 && !map2) {
-                MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
-                adjustMap(map1);
-                this.map = map1.getMap();
-                for(Ghost g: ghosts)
-                	g.parentBoard = this;
-                map2 = true;
-                BFSFinder.map = map1.getMap();
-                pacman.parentBoard = this;
-            }
-            else if(this.level !=2 && map2) {
-            	System.out.println("SAD");
+            map2 = true;
+            pacman.parentBoard = this;
+            if(pacman.level==2)
+            	pacman.level=1;
+        }
+        else if(this.level !=2) {
+        	if(map2) {
                 MapData map1 = getMapFromResource("/resources/maps/start_map.txt");
                 adjustMap(map1);
                 this.map = map1.getMap();
-                map2=false;
                 BFSFinder.map = map1.getMap();
+                for(Ghost g: ghosts) {
+                	g.parentBoard = this;
+                	g.bfs = new BFSFinder(this);
+                	if(g.level==2)
+            			g.level=1;
+                }
+                map2 = false;
                 pacman.parentBoard = this;
+        	}
+            if(this.level==3) {
+            	pacman.level = 2;
+            	for(Ghost gh: ghosts) {
+            		if(gh.level==2)
+            			gh.level=1;
+            	}
             }
-            
-        }
+            else if(this.level==4 && flag) {
+            	for(Ghost gh: ghosts) {
+            		gh.level=2;
+            		gh.parentBoard = this;
+            		gh.bfs = new BFSFinder(this);
+            		flag=false;
+            	}
+            }  
+        } 
+        score+=scoreToAdd;
+        scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
         
         if(bombPoints>0 && !pacmanBomb) { 
         	pacman.setBombImage();
@@ -478,7 +516,7 @@ public class Game extends JPanel {
             g.drawString(s.toString(), pacman.pixelPosition.x + 13, pacman.pixelPosition.y + 50);
             //drawScore = false;
             score += s;
-            scoreboard.setText("    Score : "+score +" Lives : "+lives + " Level : ");
+            scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
             clearScore = true;
 
         }

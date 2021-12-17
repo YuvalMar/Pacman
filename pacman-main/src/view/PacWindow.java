@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class PacWindow extends JFrame  {
 
     public PacWindow(String playerName) {
-        setTitle("AKP Pacman v1.0");
+        setTitle("Wolf Team Pacman");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.black);

@@ -79,7 +79,7 @@ public class StartWindow extends JFrame {
         highScoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                HighScoresWindow hb = new HighScoresWindow();
+                HistoryWindow hb = new HistoryWindow();
                 dispose();
             }
         });

@@ -30,7 +30,9 @@ public class SysData {
 	
 	private ArrayList<Question> questions = new ArrayList<Question>();
 	private ArrayList<Question> currentGameQuestions = new ArrayList<>();
+	private ArrayList<String> players = new ArrayList<String>();
 	public String path = "src/controller/q.json";
+	public String playersPath = "src/controller/gamesHistory.json";
 
 
 	private static SysData instance;
@@ -74,16 +76,23 @@ public class SysData {
 					answers.add((String) tempAnswers.get(i));
 					
 				}
-//				Iterator<String> iterator2 = tempAnswers.iterator();
-//				while (iterator2.hasNext()) {
-//					answers.add(iterator2.next());
-//				}
-//				
-//				questions = arr;
 				Question q = new Question(new Point(0,0), level, question, answers, correctAnswer);
 				questions.add(q);
 				answers.clear();
 			}
+			JSONObject objPlayers = (JSONObject) new JSONParser().parse(new FileReader(playersPath));
+			JSONArray arrPlayers = (JSONArray) objPlayers.get("players");
+			String player = "";
+			String score = "";
+			Iterator<JSONObject> playersIterator = arrPlayers.iterator();
+			while(playersIterator.hasNext()) {
+				JSONObject temp = playersIterator.next();
+				player = (String) temp.get("playerName");
+				score = (String) temp.get("Score");
+				String toAdd = player + "           " + score;
+				players.add(toAdd);
+			}
+			System.out.println("XXX");
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}catch(NullPointerException e) {
@@ -91,7 +100,6 @@ public class SysData {
 		}
 		return;
 	}
-	
 	
 	/**
 	 * @param question
@@ -101,6 +109,7 @@ public class SysData {
 	 * @return
 	 * Convert the question, answers list, correct answer and level from String to JSON.
 	 */
+	@SuppressWarnings("unchecked")
 	public  boolean addQuestion(String question, ArrayList<String> answers, String correctAnswer, String level) {
 		try {
 			if(answers.size() != 4)
@@ -163,6 +172,31 @@ public class SysData {
 			return false;
 		}
 		return bool;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean addPlayersToHistory(String player, String score) {	
+		try {
+			JSONObject history = (JSONObject) new JSONParser().parse(new FileReader(playersPath));
+			JSONArray arr = (JSONArray) history.get("players");
+			JSONObject obj = new JSONObject();
+			obj.put("playerName", player);
+			obj.put("Score", score);
+			// create the new question
+			arr.add(obj);
+			// create a new json object to hold the array and the array key
+			JSONObject toAdd = new JSONObject();
+			toAdd.put("players", arr);
+			// write json object to file
+			FileWriter file = new FileWriter(playersPath, false);
+			file.write(toAdd.toJSONString());
+			file.flush();
+			file.close();
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;
 		
 	}
 
@@ -175,6 +209,10 @@ public class SysData {
 	
 	public  String getQuestions(int index) {
 		return getQuestionsList().get(index).getAnswers().get(0);
+	}
+	
+	public ArrayList<String> getHistory(){
+		return this.players;
 	}
 	
 	

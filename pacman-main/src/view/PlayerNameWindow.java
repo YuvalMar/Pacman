@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class PlayerNameWindow extends JFrame {
 	private JTextField textField;
@@ -30,15 +31,31 @@ public class PlayerNameWindow extends JFrame {
 		buttonsC.add(playerName);
 		playerName.setColumns(10);
 		FancyButton btnNewButton = new FancyButton("Start Game");
+		FancyButton backBtn = new FancyButton("Back");
 		btnNewButton.setBounds(256, 143, 97, 25);
+		backBtn.setBounds(256, 173, 97, 25);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PacWindow pw = new PacWindow(playerName.getText());
+				if(playerName.getText().length()<2)
+					JOptionPane.showMessageDialog(null, "Name must be 2 characters or more");
+				else {
+					PacWindow pw = new PacWindow(playerName.getText());
+					dispose();
+				}
+			}
+		});
+		backBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StartWindow s = new StartWindow();
 				dispose();
+				
 			}
 		});
 		buttonsC.setLayout(null);
 		buttonsC.add(btnNewButton);
+		buttonsC.add(backBtn);
 		getContentPane().add(buttonsC, BorderLayout.CENTER);
 		
 		JLabel lblNewLabel = new JLabel("Player Name:");

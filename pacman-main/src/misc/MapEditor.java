@@ -5,6 +5,7 @@ import model.Food;
 import model.PowerUpFood;
 import model.TeleportTunnel;
 import view.PacWindow;
+import view.StartWindow;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -64,7 +65,7 @@ public class MapEditor extends JFrame {
         ghostSelection.add(l8);
         ghostSelection.add(l9);
 
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
         sideBar.add(ghostSelection,BorderLayout.NORTH);
         getContentPane().add(sideBar,BorderLayout.EAST);
 
@@ -81,13 +82,24 @@ public class MapEditor extends JFrame {
 
 
         FancyButton startButton = new FancyButton("Start Game");
+        FancyButton back = new FancyButton("Back");
+        back.setVerticalAlignment(SwingConstants.BOTTOM);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PacWindow(compileMap(ta.getText()));
+                new PacWindow(compileMap(ta.getText()),"Player");
             }
         });
+        back.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StartWindow s = new StartWindow();
+				dispose();
+			}
+		});
         sideBar.add(startButton,BorderLayout.SOUTH);
+        sideBar.add(back);
         //setLayout(new Grid);
 
         setVisible(true);

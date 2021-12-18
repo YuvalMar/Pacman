@@ -11,11 +11,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Game extends JPanel {
-
 
     public Timer redrawTimer;
     public ActionListener redrawAL;
@@ -31,7 +32,9 @@ public class Game extends JPanel {
 
     public Pacman pacman;
     public ArrayList<Food> foods;
+    public ArrayList<Food> eatenFoods;
     public ArrayList<PowerUpFood> pufoods;
+    public ArrayList<PowerUpFood> eatenPuFoods;
     public ArrayList<Ghost> ghosts;
     public ArrayList<TeleportTunnel> teleports;
 
@@ -42,6 +45,8 @@ public class Game extends JPanel {
     public boolean clearScore = false; 
     public boolean flag = true;
     public boolean flag1 = true;
+    public boolean flag_level3=true;
+    public boolean winner = false;
     public int scoreToAdd = 0;
     public int lives;
     public int bombPoints;
@@ -63,13 +68,15 @@ public class Game extends JPanel {
     public MapData md_backup;
     public PacWindow windowParent;
     public boolean map2 = false;
+    public String playerName;
     
 
     
         
     @SuppressWarnings("serial")
-	public Game(JLabel scoreboard, MapData md, PacWindow pw){
-        this.scoreboard = scoreboard;
+	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName){
+        this.playerName = playerName;
+    	this.scoreboard = scoreboard;
         this.setDoubleBuffered(true);
         md_backup = md;
         windowParent = pw;
@@ -82,13 +89,15 @@ public class Game extends JPanel {
         this.isCustom = md.isCustom();
         this.ghostBase = md.getGhostBasePosition();
 
-        //loadMap();
+       
 
         pacman = new Pacman(md.getPacmanPosition().x,md.getPacmanPosition().y,this);
         addKeyListener(pacman);
 
         foods = new ArrayList<>();
+        eatenFoods = new ArrayList<Food>();
         pufoods = new ArrayList<>();
+        eatenPuFoods = new ArrayList<PowerUpFood>();
         ghosts = new ArrayList<>();
         teleports = new ArrayList<>();
 
@@ -205,6 +214,8 @@ public class Game extends JPanel {
 	                        g.moveTimer.stop();
 	                        isGameOver = true;
 	                        scoreboard.setText("    Press R to try again !");
+	                        SysData.getInstance().readJson();
+	                        SysData.getInstance().addPlayersToHistory(this.playerName, String.valueOf(score));
 	                        //scoreboard.setForeground(Color.red);
 	                        break;
                     	} else {
@@ -261,33 +272,46 @@ public class Game extends JPanel {
     }
     
     public void update(){
-    	
+    	scoreToAdd=0;
         Food foodToEat = null;
         //Check food eat
         for(Food f : foods){
             if(pacman.logicalPosition.x == f.position.x && pacman.logicalPosition.y == f.position.y) {
-                foodToEat = f;
-                
+                foodToEat = f;   
             }
         }
+        
         if(foodToEat!=null) {
             SoundPlayer.play("pacman_eat.wav");
+            eatenFoods.add(foodToEat);
             foods.remove(foodToEat);
+            foodToEat.restoreFood();
             score ++;
             scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
-
-            if(foods.size() == 0){
-                siren.stop();
-                pac6.stop();
-                SoundPlayer.play("pacman_intermission.wav");
-                isWin = true;
-                pacman.moveTimer.stop();
-                for(Ghost g : ghosts){
-                    g.moveTimer.stop();
-                }
-            }
         }
-
+        
+        for(Iterator<Food> fIterator = eatenFoods.iterator(); fIterator.hasNext();) {
+        	Food checkFood = fIterator.next();
+        	if(checkFood.isEaten) {
+        		foods.add(new Food(checkFood.position.x, checkFood.position.y));
+        		fIterator.remove();
+        	}
+        }
+        
+        if(score>199){
+        	this.score=200;
+            siren.stop();
+            pac6.stop();
+            SoundPlayer.play("pacman_intermission.wav");
+            isWin = true;
+            pacman.moveTimer.stop();
+            for(Ghost g : ghosts){
+                g.moveTimer.stop();
+            }
+            SysData.getInstance().readJson();
+            SysData.getInstance().addPlayersToHistory(playerName, "200");
+        }
+        
         PowerUpFood puFoodToEat = null;
         //Check pu food eat
         for(PowerUpFood puf : pufoods){
@@ -296,20 +320,23 @@ public class Game extends JPanel {
             
         }
         if(puFoodToEat!=null) {
-            //SoundPlayer.play("pacman_eat.wav");
             switch(puFoodToEat.type) {
                 case 0:
                     //Bomb Point
                 	bombPoints++;
+                	eatenPuFoods.add(puFoodToEat);
                     pufoods.remove(puFoodToEat);
-
+                    puFoodToEat.restoreFood();
                     break;
-                //Question Item
                 default:
+                	//Question Item
                     SoundPlayer.play("pacman_eatfruit.wav");
                     pufoods.remove(puFoodToEat);
+                    int randomFood = ThreadLocalRandom.current().nextInt(foods.size()-1)+1;
+                    Point f = foods.get(randomFood).position;
+                    foods.remove(randomFood);
+                    pufoods.add(new PowerUpFood(f.x, f.y, puFoodToEat.type));
                     drawScore = true;
-           
                     freeze();
                     QuestionWindow qw = new QuestionWindow();
                     windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
@@ -334,16 +361,17 @@ public class Game extends JPanel {
             }  
         }
         
-        if(score < 10) 
+        if(score < 51) 
         	this.level = 1;
-        else if(score>9 && score<20) 
+        else if(score>50 && score<101) 
         	this.level = 2;
-        else if(score >19 && score <30)
+        else if(score >100 && score <151)
         	this.level = 3;
-        else if(score>29)
+        else if(score>151)
         	this.level =4;
         
          if(this.level == 2 && !map2 ) {
+        	 flag_level3=true;
             MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
             adjustMap(map1);
             this.map = map1.getMap();
@@ -374,19 +402,25 @@ public class Game extends JPanel {
                 map2 = false;
                 pacman.parentBoard = this;
         	}
-            if(this.level==3) {
+            if(this.level==3 && flag_level3) {
+            	flag_level3=false;
             	pacman.level = 2;
+            	flag=true;
             	for(Ghost gh: ghosts) {
             		if(gh.level==2)
             			gh.level=1;
+            		gh.parentBoard = this;
+            		gh.bfs = new BFSFinder(this);
             	}
             }
             else if(this.level==4 && flag) {
+            	flag=false;
+            	flag_level3=true;
             	for(Ghost gh: ghosts) {
             		gh.level=2;
             		gh.parentBoard = this;
             		gh.bfs = new BFSFinder(this);
-            		flag=false;
+            		
             	}
             }  
         } 
@@ -410,7 +444,6 @@ public class Game extends JPanel {
             }
         }
         
-      
         //Check Teleport
         for(TeleportTunnel tp : teleports) {
             if (pacman.logicalPosition.x == tp.getFrom().x && pacman.logicalPosition.y == tp.getFrom().y && pacman.activeMove == tp.getReqMove()) {
@@ -428,6 +461,7 @@ public class Game extends JPanel {
                 isSiren = false;
             }
         }
+        
         if(isSiren){
             pac6.stop();
             if(mustReactivateSiren){
@@ -622,31 +656,17 @@ public class Game extends JPanel {
         */
     }
     public void setBombPoints(int num) {
-    	this.bombPoints = num;
+    	if(num<0)
+    		this.bombPoints=0;
+    	else
+    		this.bombPoints=num;
     }
     public int getBombPoints() {
     	return this.bombPoints;
     }
     
   
-    //TESTTESTTEST
-    public int[][] loadMap(int mx, int my, String relPath) {
-        try {
-            Scanner scn = new Scanner(this.getClass().getResourceAsStream(relPath));
-            int[][] map;
-            map = new int[mx][my];
-            for (int y = 0; y < my; y++) {
-                for (int x = 0; x < mx; x++) {
-                    map[x][y] = scn.nextInt();
-                }
-            }
-            return map;
-        } catch (Exception e) {
-            System.err.println("Error Reading Map File !");
-        }
-        return null;
-    }
-
+    //Map Methods
     public MapData getMapFromResource(String relPath) {
         String mapStr = "";
         try {

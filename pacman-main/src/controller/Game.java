@@ -4,6 +4,7 @@ import misc.*;
 import model.*;
 import view.PacWindow;
 import view.QuestionWindow;
+import view.StartWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -213,7 +214,6 @@ public class Game extends JPanel {
 	                        pacman.animTimer.stop();
 	                        g.moveTimer.stop();
 	                        isGameOver = true;
-	                        scoreboard.setText("    Press R to try again !");
 	                        SysData.getInstance().readJson();
 	                        SysData.getInstance().addPlayersToHistory(this.playerName, String.valueOf(score));
 	                        //scoreboard.setForeground(Color.red);
@@ -579,7 +579,15 @@ public class Game extends JPanel {
         }else if(ae.getID()== Messages.RESET){
             if(isGameOver)
                 restart();
-        }else {
+        }else if(ae.getID() == Messages.HOME) {
+        	if(isGameOver) {
+        		new StartWindow();
+        		this.windowParent.dispose();
+        	}
+        	
+        }
+        		
+        else {
             super.processEvent(ae);
         }
     }

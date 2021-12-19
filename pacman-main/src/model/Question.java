@@ -6,16 +6,14 @@ import java.util.ArrayList;
 public class Question {
     
     public static int id = 1;
-    public Point position;
     public String level;
     public String qBody;
     public ArrayList<String> answers = new ArrayList<String>();
     public String correctAns;
     
 
-    public Question(Point position, String level, String qBody, ArrayList<String> answers, String correct) {
+    public Question(String level, String qBody, ArrayList<String> answers, String correct) {
         Question.id = id++;
-        this.position = position;
         this.level = level;
         this.qBody = qBody;
         for(String a : answers)
@@ -31,13 +29,6 @@ public class Question {
         this.id = id;
     }
 
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
 
     public String getLevel() {
         return level;

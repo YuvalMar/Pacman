@@ -76,7 +76,7 @@ public class SysData {
 					answers.add((String) tempAnswers.get(i));
 					
 				}
-				Question q = new Question(new Point(0,0), level, question, answers, correctAnswer);
+				Question q = new Question(level, question, answers, correctAnswer);
 				questions.add(q);
 				answers.clear();
 			}
@@ -92,7 +92,6 @@ public class SysData {
 				String toAdd = player + "           " + score;
 				players.add(toAdd);
 			}
-			System.out.println("XXX");
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}catch(NullPointerException e) {

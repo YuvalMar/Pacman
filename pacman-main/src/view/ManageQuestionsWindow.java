@@ -20,15 +20,20 @@ import misc.MapEditor;
 import model.FancyButton;
 import model.Question;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 
 public class ManageQuestionsWindow extends JFrame {
-	private JTextField qbody;
+	private JTextArea qbody;
 	private JTextField answer1;
 	private JTextField answer2;
 	private JTextField answer3;
 	private JTextField answer4;
-	private JTextField correctAnswer;
-	private JTextField diff;
+	private JComboBox<String> correctAnswer;
+	private JComboBox<String> diff;
 	public JList<Question> list;
 	public ManageQuestionsWindow() {
 		
@@ -42,57 +47,67 @@ public class ManageQuestionsWindow extends JFrame {
 		list = new JList<Question>(new Vector<Question>(SysData.getInstance().getQuestionsList()));
         list.setBackground(Color.ORANGE);
         list.setForeground(Color.RED);
-        list.setBounds(12, 13, 311, 164);
+        list.setBounds(12, 13, 469, 270);
         buttonsC.add(list);
         
-        qbody = new JTextField();
-        qbody.setBounds(383, 13, 116, 22);
+        qbody = new JTextArea();
+//        qbody.setHorizontalAlignment(SwingConstants.LEFT);
+        qbody.setLineWrap(true);
+        qbody.setWrapStyleWord(true);
+        qbody.setBounds(551, 13, 227, 72);
         buttonsC.add(qbody);
         qbody.setColumns(10);
         
         
         answer1 = new JTextField();
         answer1.setColumns(10);
-        answer1.setBounds(383, 48, 116, 22);
+        answer1.setBounds(601, 98, 116, 22);
         buttonsC.add(answer1);
         
         answer2 = new JTextField();
         answer2.setColumns(10);
-        answer2.setBounds(383, 83, 116, 22);
+        answer2.setBounds(601, 133, 116, 22);
         buttonsC.add(answer2);
         
         answer3 = new JTextField();
         answer3.setColumns(10);
-        answer3.setBounds(383, 118, 116, 22);
+        answer3.setBounds(601, 168, 116, 22);
         buttonsC.add(answer3);
         
         answer4 = new JTextField();
         answer4.setColumns(10);
-        answer4.setBounds(383, 155, 116, 22);
+        answer4.setBounds(601, 203, 116, 22);
         buttonsC.add(answer4);
         
-        correctAnswer = new JTextField();
-        correctAnswer.setBounds(383, 187, 50, 22);
+        correctAnswer = new JComboBox<String>();
+        correctAnswer.setBounds(601, 238, 50, 22);
         buttonsC.add(correctAnswer);
-        correctAnswer.setColumns(10);
+        correctAnswer.addItem("1");
+        correctAnswer.addItem("2");
+        correctAnswer.addItem("3");
+        correctAnswer.addItem("4");
+        correctAnswer.setSelectedIndex(-1);
         
-        diff = new JTextField();
-        diff.setColumns(10);
-        diff.setBounds(449, 187, 50, 22);
+        diff = new JComboBox<String>();
+        diff.setBounds(601, 273, 50, 22);
+        diff.addItem("1");
+        diff.addItem("2");
+        diff.addItem("3");
+        diff.setSelectedIndex(-1);
         buttonsC.add(diff);
         
         FancyButton backBtn = new FancyButton("Back");
         FancyButton addBtn = new FancyButton("Add");
         FancyButton resetBtn = new FancyButton("Reset");
-        addBtn.setBounds(197, 188, 50, 20);
-        resetBtn.setBounds(22, 188, 50, 20);
+        addBtn.setBounds(22, 296, 50, 20);
+        resetBtn.setBounds(663, 272, 50, 20);
         FancyButton editBtn = new FancyButton("Edit");
-        editBtn.setLocation(150, 188);
+        editBtn.setLocation(142, 296);
         editBtn.setSize(45, 20);
         FancyButton deleteBtn = new FancyButton("Delete");
-        deleteBtn.setLocation(82, 188);
+        deleteBtn.setLocation(82, 296);
         deleteBtn.setSize(45, 20);
-        backBtn.setBounds(259, 190, 64, 16);
+        backBtn.setBounds(12, 387, 64, 16);
         resetBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -103,7 +118,8 @@ public class ManageQuestionsWindow extends JFrame {
 			}
 		});
         backBtn.addActionListener(new ActionListener() {
-            @Override
+            @SuppressWarnings("unused")
+			@Override
             public void actionPerformed(ActionEvent e) {
                 StartWindow sw = new StartWindow();
                 dispose();
@@ -135,9 +151,9 @@ public class ManageQuestionsWindow extends JFrame {
 						answers.add(answer2.getText());
 						answers.add(answer3.getText());
 						answers.add(answer4.getText());
-						Question toAdd = new Question(diff.getText(), qbody.getText(), answers, correctAnswer.getText());
+						Question toAdd = new Question(diff.getSelectedItem().toString(), qbody.getText(), answers, correctAnswer.getSelectedItem().toString());
 						SysData.getInstance().deleteQuestion(SysData.getInstance().getQuestionsList().get(list.getSelectedIndex()).getqBody());
-						SysData.getInstance().addQuestion(toAdd.getqBody(), answers, correctAnswer.getText(), diff.getText());
+						SysData.getInstance().addQuestion(toAdd.getqBody(), answers, correctAnswer.getSelectedItem().toString(), diff.getSelectedItem().toString());
 						JOptionPane.showMessageDialog(null, "Question " + qbody.getText()+ " Edited");
 						new ManageQuestionsWindow();
 						dispose();
@@ -157,7 +173,7 @@ public class ManageQuestionsWindow extends JFrame {
 						answers.add(answer2.getText());
 						answers.add(answer3.getText());
 						answers.add(answer4.getText());
-						SysData.getInstance().addQuestion(qbody.getText(), answers, correctAnswer.getText(), diff.getText());
+						SysData.getInstance().addQuestion(qbody.getText(), answers, correctAnswer.getSelectedItem().toString(), diff.getSelectedItem().toString());
 						JOptionPane.showMessageDialog(null, "Question " + qbody.getText()+ " Added");
 						new ManageQuestionsWindow();
 						dispose();
@@ -175,7 +191,44 @@ public class ManageQuestionsWindow extends JFrame {
         buttonsC.add(resetBtn);
         
         getContentPane().add(buttonsC);
-                
+        
+        JLabel lblNewLabel = new JLabel("Question");
+        lblNewLabel.setForeground(Color.ORANGE);
+        lblNewLabel.setBounds(493, 14, 56, 16);
+        buttonsC.add(lblNewLabel);
+        
+        JLabel lblAnswer = new JLabel("Answer 1");
+        lblAnswer.setForeground(Color.ORANGE);
+        lblAnswer.setBounds(493, 98, 56, 16);
+        buttonsC.add(lblAnswer);
+        
+        JLabel lblAnswer_2 = new JLabel("Answer 2");
+        lblAnswer_2.setForeground(Color.ORANGE);
+        lblAnswer_2.setBounds(493, 133, 56, 16);
+        buttonsC.add(lblAnswer_2);
+        
+        JLabel lblAnswer_1_1 = new JLabel("Answer 3");
+        lblAnswer_1_1.setForeground(Color.ORANGE);
+        lblAnswer_1_1.setBounds(493, 168, 56, 16);
+        buttonsC.add(lblAnswer_1_1);
+        
+        JLabel lblAnswer_1_1_1 = new JLabel("Answer 4");
+        lblAnswer_1_1_1.setForeground(Color.ORANGE);
+        lblAnswer_1_1_1.setBounds(493, 203, 56, 16);
+        buttonsC.add(lblAnswer_1_1_1);
+        
+        JLabel lblAnswer_1_1_1_1 = new JLabel("Correct Answer");
+        lblAnswer_1_1_1_1.setForeground(Color.ORANGE);
+        lblAnswer_1_1_1_1.setBounds(493, 238, 89, 16);
+        buttonsC.add(lblAnswer_1_1_1_1);
+        
+        JLabel lblAnswer_1_1_1_1_1 = new JLabel("Level");
+        lblAnswer_1_1_1_1_1.setForeground(Color.ORANGE);
+        lblAnswer_1_1_1_1_1.setBounds(493, 273, 89, 16);
+        buttonsC.add(lblAnswer_1_1_1_1_1);
+        
+
+                       
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if (list.getSelectedIndex() != -1) {
@@ -185,8 +238,8 @@ public class ManageQuestionsWindow extends JFrame {
 					answer2.setText(SysData.getInstance().getQuestionsList().get(ind).getAnswers().get(1));
 					answer3.setText(SysData.getInstance().getQuestionsList().get(ind).getAnswers().get(2));
 					answer4.setText(SysData.getInstance().getQuestionsList().get(ind).getAnswers().get(3));
-					correctAnswer.setText(SysData.getInstance().getQuestionsList().get(ind).getCorrectAnswer());
-					diff.setText(SysData.getInstance().getQuestionsList().get(ind).getLevel());
+					correctAnswer.setSelectedItem(SysData.getInstance().getQuestionsList().get(ind).getCorrectAnswer());
+					diff.setSelectedItem(SysData.getInstance().getQuestionsList().get(ind).getLevel());
 				}
 				
 			}
@@ -197,7 +250,7 @@ public class ManageQuestionsWindow extends JFrame {
 	}
 	public boolean checkIfNotEmpty() {
 		return !qbody.getText().isEmpty() && !answer1.getText().isEmpty() && !answer2.getText().isEmpty()
-				&& !answer3.getText().isEmpty() && !answer4.getText().isEmpty() && !correctAnswer.getText().isEmpty()
-				&& !diff.getText().isEmpty();
+				&& !answer3.getText().isEmpty() && !answer4.getText().isEmpty() && !(correctAnswer.getSelectedIndex() == -1)
+				&& !(diff.getSelectedIndex() == -1);
 	}
 }

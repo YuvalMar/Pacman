@@ -31,6 +31,7 @@ public class SysData {
 	private ArrayList<Question> questions = new ArrayList<Question>();
 	private ArrayList<Question> currentGameQuestions = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<String>();
+	private ArrayList<String> scores = new ArrayList<String>();
 	public String path = "src/controller/q.json";
 	public String playersPath = "src/controller/gamesHistory.json";
 
@@ -89,8 +90,9 @@ public class SysData {
 				JSONObject temp = playersIterator.next();
 				player = (String) temp.get("playerName");
 				score = (String) temp.get("Score");
-				String toAdd = player + "           " + score;
-				players.add(toAdd);
+//				String toAdd = player + "           " + score;
+				players.add(player);
+				scores.add(score);
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
@@ -212,6 +214,9 @@ public class SysData {
 	
 	public ArrayList<String> getHistory(){
 		return this.players;
+	}
+	public ArrayList<String> getScores(){
+		return this.scores;
 	}
 	
 	

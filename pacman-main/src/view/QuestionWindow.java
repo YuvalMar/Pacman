@@ -56,7 +56,7 @@ public class QuestionWindow extends JDialog {
         answer1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setCorrect(answer1.getText().equals(q.getCorrectAnswer()));
+                setCorrect(answer1.getText().equals(q.getAnswers().get(Integer.valueOf(q.getCorrectAnswer())-1)));
                 dispose();
             }
         });
@@ -68,7 +68,7 @@ public class QuestionWindow extends JDialog {
         answer2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setCorrect(answer2.getText().equals(q.getCorrectAnswer()));
+            	setCorrect(answer2.getText().equals(q.getAnswers().get(Integer.valueOf(q.getCorrectAnswer())-1)));
                 dispose();
             }
         });
@@ -80,7 +80,7 @@ public class QuestionWindow extends JDialog {
         answer3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setCorrect(answer3.getText().equals(q.getCorrectAnswer()));
+            	setCorrect(answer3.getText().equals(q.getAnswers().get(Integer.valueOf(q.getCorrectAnswer())-1)));
                 dispose();
             }
         });
@@ -92,7 +92,7 @@ public class QuestionWindow extends JDialog {
         answer4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setCorrect(answer4.getText().equals(q.getCorrectAnswer()));
+            	setCorrect(answer4.getText().equals(q.getAnswers().get(Integer.valueOf(q.getCorrectAnswer())-1)));
                 dispose();
             }
         });

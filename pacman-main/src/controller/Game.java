@@ -182,16 +182,12 @@ public class Game extends JPanel {
                 if(getBombPoints()>0) {
                 	for(Ghost g: ghosts) {
                 		if(isGhostNearby(g)) {
-                			System.out.println("GHOST");
                 			g.die();
                 			setBombPoints(getBombPoints()-1);
-                		}else
-                			System.out.println("NO GHOST");
+                		}
                 	}
                 	
                 }
-                else
-                	System.out.println("NO");
             }
         });
        
@@ -580,11 +576,10 @@ public class Game extends JPanel {
             if(isGameOver)
                 restart();
         }else if(ae.getID() == Messages.HOME) {
-        	if(isGameOver) {
+        	if(isWin || isGameOver) {
         		new StartWindow();
         		this.windowParent.dispose();
-        	}
-        	
+        	}	
         }
         		
         else {
@@ -612,7 +607,7 @@ public class Game extends JPanel {
     public void restart(){
 
         siren.stop();
-        new PacWindow("A");
+        new PacWindow(this.playerName);
         windowParent.dispose();
 
         /*

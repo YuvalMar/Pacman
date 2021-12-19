@@ -3,7 +3,7 @@ X___O_______XGX_______O__3X
 X_XXXX_XXXXXX=XXXXXX_XXXX_X
 X_XXXX_XXXXXX=XXXXXX_XXXX_X
 X_XXXX_XXXXXXXXXXXXX_XXXX_X
-XP________________________X
+XP__F_____________________X
 X_XXXX_XX_XXXXXXX_XX_XXXX_X
 X_XXXX_XX_XXXXXXX_XX_XXXX_X
 X______XX_________XX______X

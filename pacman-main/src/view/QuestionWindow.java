@@ -5,8 +5,10 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -28,7 +30,7 @@ public class QuestionWindow extends JDialog {
 	
 	public boolean correct =false;
 	public int level = 0;
-	public QuestionWindow() {
+	public QuestionWindow(int type) {
 		
         setSize(736,335);
         getContentPane().setBackground(Color.black);
@@ -38,9 +40,10 @@ public class QuestionWindow extends JDialog {
         buttonsC.setBackground(Color.black);
         
         getContentPane().add(buttonsC);
-        int questionsNum = SysData.getInstance().getQuestionsList().size();
+        List<Question> filteredQuestionsList= SysData.getInstance().getQuestionsList().stream().filter(question -> question.getLevel().equals(String.valueOf(type))).collect(Collectors.toList());
+        int questionsNum = filteredQuestionsList.size();
         int randumNum = ThreadLocalRandom.current().nextInt(0, questionsNum);
-        Question q = SysData.getInstance().getQuestionsList().get(randumNum);
+        Question q = filteredQuestionsList.get(randumNum);
         buttonsC.setLayout(null);
         JLabel qbody = new JLabel("<html>" + q.getqBody() + "</html>", JLabel.CENTER);
         qbody.setHorizontalAlignment(SwingConstants.CENTER);

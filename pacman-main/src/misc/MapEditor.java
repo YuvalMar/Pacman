@@ -157,7 +157,7 @@ public class MapEditor extends JFrame {
             }
             if(c == 'F'){
                 map[i][j] = 0;
-                customMap.getPufoodPositions().add(new PowerUpFood(i,j, ThreadLocalRandom.current().nextInt(4)+1));
+                customMap.getPufoodPositions().add(new PowerUpFood(i,j, ThreadLocalRandom.current().nextInt(1, 4)));
             }
             if(c == 'B'){
                 map[i][j] = 0;

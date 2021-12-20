@@ -30,9 +30,9 @@ public class SysData {
 	private ArrayList<Question> questions = new ArrayList<Question>();
 	private ArrayList<String> players = new ArrayList<String>();
 	private ArrayList<String> scores = new ArrayList<String>();
-	public String path = "src/controller/q.json";
-	public String playersPath = "src/controller/gamesHistory.json";
-
+	public String curDir = System.getProperty("user.dir");
+	public String path = "";
+	public String playersPath = "";
 
 	private static SysData instance;
 
@@ -50,7 +50,20 @@ public class SysData {
 	 */
 	@SuppressWarnings("unchecked")
 	public  void readJson() {
+		path = "/controller/q.json";
+		playersPath = "/controller/gamesHistory.json";
 		try {
+			if(SysData.class.getResource("SysData.class").getContent().toString().contains("jar")) {
+				String temp = path;
+				path = curDir + temp;
+				temp = playersPath;
+				playersPath = curDir + temp;
+			}else {
+				String temp = path;
+				path = "src" + temp;
+				temp = playersPath;
+				playersPath = "src" + temp;
+			}
 			ArrayList<String> answers = new ArrayList<String>();
 			ArrayList<String> ans = new ArrayList<String>();
 			ans.add("1");

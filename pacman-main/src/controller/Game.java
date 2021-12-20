@@ -151,8 +151,8 @@ public class Game extends JPanel {
             }catch(Exception e){}
         }
 
-        pfoodImage = new Image[5];
-        for(int ms=0 ;ms<5;ms++){
+        pfoodImage = new Image[4];
+        for(int ms=0 ;ms<4;ms++){
             try {
                 pfoodImage[ms] = ImageIO.read(this.getClass().getResource("/resources/images/food/"+ms+".png"));
             }catch(Exception e){}
@@ -331,7 +331,7 @@ public class Game extends JPanel {
                     puFoodToEat.restoreFood();
                     break;
                 default:
-                	//Question Item. open question window and freeze the game untill the player answers.
+                	//Question Item. open question window and freeze the game until the player answers.
                     SoundPlayer.play("pacman_eatfruit.wav");
                     pufoods.remove(puFoodToEat);
                     int randomFood = ThreadLocalRandom.current().nextInt(foods.size()-1)+1;
@@ -339,7 +339,7 @@ public class Game extends JPanel {
                     foods.remove(randomFood);
                     pufoods.add(new PowerUpFood(f.x, f.y, puFoodToEat.type));
                     freeze();
-                    QuestionWindow qw = new QuestionWindow();
+                    QuestionWindow qw = new QuestionWindow(puFoodToEat.type);
                     windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
                     unfreeze();
                     
@@ -495,14 +495,12 @@ public class Game extends JPanel {
         //Draw Food
         g.setColor(new Color(204, 122, 122));
         for(Food f : foods){
-            //g.fillOval(f.position.x*28+22,f.position.y*28+22,4,4);
             g.drawImage(foodImage,10+f.position.x*28,10+f.position.y*28,null);
         }
 
         //Draw PowerUpFoods
         g.setColor(new Color(204, 174, 168));
         for(PowerUpFood f : pufoods){
-            //g.fillOval(f.position.x*28+20,f.position.y*28+20,8,8);
             g.drawImage(pfoodImage[f.type],10+f.position.x*28,10+f.position.y*28,null);
         }
 

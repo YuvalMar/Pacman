@@ -50,7 +50,7 @@ public class PacWindow extends JFrame  {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(Color.black);
 
-        setSize(794, 884);
+        setSize(794, 657);
         setLocationRelativeTo(null);
 
         JLabel scoreboard = new JLabel("    Score : 0");

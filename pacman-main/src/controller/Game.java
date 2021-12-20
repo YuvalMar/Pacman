@@ -16,6 +16,14 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Pacman Game class. The constructor recieves JLabel scoreboard, MapData md, PacWindow pw, String playerName
+ * Initialize the game with the start map, scoreboard with score=0, lives=3 and level=1
+ * Keeps ths player's name to write it to history file at the end of the game.
+ * @author Berko
+ *
+ */
+
 @SuppressWarnings("serial")
 public class Game extends JPanel {
 
@@ -72,7 +80,6 @@ public class Game extends JPanel {
     public String playerName;
     
 
-    
 	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName){
         this.playerName = playerName;
     	this.scoreboard = scoreboard;
@@ -191,6 +198,11 @@ public class Game extends JPanel {
        
     }
     
+	/**
+	 * This functions checks if there was a collision between pacman and a ghost. 
+	 * If it was player's last live, the game ends and the score written to history file.
+	 * else, lives = lives-1, pacman and the ghost goes back to base position and the game continues.
+	 */
     public void collisionTest(){
     	Rectangle pr = new Rectangle(pacman.pixelPosition.x+13,pacman.pixelPosition.y+13,2,2);
         Ghost ghostToRemove = null;
@@ -250,10 +262,15 @@ public class Game extends JPanel {
         }
     }
     
+    
+    /**
+     * Update runs every time something changed on board. Updates the score, pacman bomb or question eating.
+     */
     public void update(){
     	scoreToAdd=0;
         Food foodToEat = null;
-        //Check food eat
+        
+        //Check normal food eating. Start food timer to restore it after 30 seconds
         for(Food f : foods){
             if(pacman.logicalPosition.x == f.position.x && pacman.logicalPosition.y == f.position.y) {
                 foodToEat = f;   
@@ -277,6 +294,7 @@ public class Game extends JPanel {
         	}
         }
         
+        //Game winner
         if(score>199){
         	this.score=200;
             siren.stop();
@@ -291,9 +309,11 @@ public class Game extends JPanel {
             SysData.getInstance().addPlayersToHistory(playerName, "200");
         }
         
+        
         if(score<0)
         	score=0;
         
+        //Bomb or question item eaten.
         PowerUpFood puFoodToEat = null;
         //Check pu food eat
         for(PowerUpFood puf : pufoods){
@@ -311,7 +331,7 @@ public class Game extends JPanel {
                     puFoodToEat.restoreFood();
                     break;
                 default:
-                	//Question Item
+                	//Question Item. open question window and freeze the game untill the player answers.
                     SoundPlayer.play("pacman_eatfruit.wav");
                     pufoods.remove(puFoodToEat);
                     int randomFood = ThreadLocalRandom.current().nextInt(foods.size()-1)+1;
@@ -339,10 +359,11 @@ public class Game extends JPanel {
                     	else
                     		scoreToAdd=-30;
                     }
-                    drawScore = true;
+                    drawScore = true; // To show score animation
             }  
         }
         
+        //Update game level
         if(score < 51) 
         	this.level = 1;
         else if(score>50 && score<101) 
@@ -352,7 +373,8 @@ public class Game extends JPanel {
         else if(score>151)
         	this.level =4;
         
-         if(this.level == 2 && !map2 ) {
+        //Check if level changed and map, ghost or pacman speed needs to be updated.
+         if(this.level == 2 && !map2 ) { // level 2 and need to open teleports
         	 flag_level3=true;
             MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
             adjustMap(map1);
@@ -370,7 +392,7 @@ public class Game extends JPanel {
             	pacman.level=1;
         }
         else if(this.level !=2) {
-        	if(map2) {
+        	if(map2) { // close teleports
                 MapData map1 = getMapFromResource("/resources/maps/start_map.txt");
                 adjustMap(map1);
                 this.map = map1.getMap();
@@ -517,7 +539,6 @@ public class Game extends JPanel {
         }
 
         if(drawScore) {
-            //System.out.println("must draw score !");
             g.setFont(new Font("Arial",Font.BOLD,15));
             g.setColor(Color.yellow);
             Integer s = scoreToAdd;

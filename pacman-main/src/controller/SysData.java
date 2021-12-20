@@ -18,18 +18,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import exceptions.NotFourAnswersException;
-import model.Answer;
 import model.Question;
 
 
 /**
- *This class defines reading to JSON files and writing to it.
+ *This class defines reading from JSON files and writing to it.
  */
 
 public class SysData {
 	
 	private ArrayList<Question> questions = new ArrayList<Question>();
-	private ArrayList<Question> currentGameQuestions = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<String>();
 	private ArrayList<String> scores = new ArrayList<String>();
 	public String path = "src/controller/q.json";
@@ -45,8 +43,9 @@ public class SysData {
 	}
 
 	/**
-	 * Read JSON questions file and parse to string variables.
-	 * Every iterations adds the question to the questions ArrayList declared in line 29(ArrayList<Question>).
+	 * Read JSON file and parse to string variables.
+	 * Every iterations adds the question to the questions ArrayList declared in line 31(ArrayList<Question>).
+	 * Every iteration adds the player and his score to  players and scores ArrayList declared in line 32 & 33 (ArrayList<String>).
 	 * @return 
 	 */
 	@SuppressWarnings("unchecked")
@@ -61,21 +60,18 @@ public class SysData {
 			String question = "";
 			String correctAnswer = "";
 			String level = "";
-			String team = "";
+
 			JSONObject obj = (JSONObject) new JSONParser().parse(new FileReader(path));
 			JSONArray arr = (JSONArray) obj.get("questions");
-			ArrayList<Question> q2 = new ArrayList<>();
 			Iterator<JSONObject> iterator = arr.iterator();
 			while (iterator.hasNext()) {
 				JSONObject temp = iterator.next();
 				question = (String) temp.get("question");
 				correctAnswer = (String) temp.get("correct_ans");
 				level = (String) temp.get("level");
-				team = (String) temp.get("team");
 				JSONArray tempAnswers = (JSONArray) temp.get("answers");
 				for( int i=0; i<tempAnswers.size(); i++) {
-					answers.add((String) tempAnswers.get(i));
-					
+					answers.add((String) tempAnswers.get(i));	
 				}
 				Question q = new Question(level, question, answers, correctAnswer);
 				questions.add(q);
@@ -146,7 +142,8 @@ public class SysData {
 		return true;
 	}
 	
-	// Loop through all the questions untill it matches the wanted question to delete.
+	// Loop through all the questions until it matches the wanted question to delete.
+	@SuppressWarnings("unchecked")
 	public  boolean deleteQuestion(String question) {
 		boolean bool = false;
 		try {
@@ -176,6 +173,7 @@ public class SysData {
 	}
 	
 	@SuppressWarnings("unchecked")
+	//Read from gameHistory file and add players to players list and scores to scores list.
 	public boolean addPlayersToHistory(String player, String score) {	
 		try {
 			JSONObject history = (JSONObject) new JSONParser().parse(new FileReader(playersPath));
@@ -206,8 +204,6 @@ public class SysData {
 		readJson();
 		return questions;
 	}
-	
-	
 	public  String getQuestions(int index) {
 		return getQuestionsList().get(index).getAnswers().get(0);
 	}

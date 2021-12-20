@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * Ghost acstract class.
+ * Ghost operates on a bfs finder to find closes path to catch pacman.
+ */
 import controller.Game;
 import misc.BFSFinder;
 import misc.moveType;
@@ -145,18 +148,11 @@ public abstract class Ghost {
                     activeMove = getMoveAI();
                     isStuck = true;
 
-                    //animTimer.stop();
-                    //System.out.println("LOGICAL POS :" + logicalPosition.x + " , " + logicalPosition.y);
-                    //if(todoMove != moveType.NONE) {
-                    //    activeMove = todoMove;
-                    //    todoMove = moveType.NONE;
-                    //}
+ 
                 }else{
                     isStuck = false;
-                    //animTimer.start();
+
                 }
-                // }
-                //TODO : fix ghost movements
                 switch(activeMove){
                     case RIGHT:
                         if(pixelPosition.x >= (parentBoard.m_x-1) * 28){

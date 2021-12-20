@@ -1,5 +1,8 @@
 package view;
-
+/*
+ * In this window the player will enter his nickname.
+ * Nickname must be between 2 and 10 characters, else there will be a message.
+ */
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;

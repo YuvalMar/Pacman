@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * Pacman class implementing KeyListener to handle movement.
+ * Also has int level to update pacman's speed.
+ */
 import controller.Game;
 import misc.moveType;
 

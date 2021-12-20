@@ -1,5 +1,8 @@
 package misc;
-
+/**
+ * Class to define map data.
+ * Defines each character from map's string.
+ */
 import model.FancyButton;
 import model.Food;
 import model.PowerUpFood;
@@ -179,19 +182,10 @@ public class MapEditor extends JFrame {
             }
         }
 
-        //Print map array
-        /*for(int ii=0;ii<my;ii++){
-            for(int jj=0;jj<mx;jj++){
-                System.out.print(map[jj][ii] + " ");
-            }
-            System.out.print('\n');
-        }*/
-
         customMap.setMap(map);
         customMap.setCustom(true);
         System.out.println("Map Read OK !");
         return customMap;
-        //new PacWindow(customMap);
     }
 
 }

@@ -1,5 +1,7 @@
 package misc;
-
+/**
+ * This class play game music on loop
+ */
 import controller.Main;
 
 import javax.sound.sampled.AudioInputStream;

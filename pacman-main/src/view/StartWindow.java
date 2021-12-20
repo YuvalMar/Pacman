@@ -1,5 +1,11 @@
 package view;
-
+/**
+ * The first window when running the game. Has the games logo, and 4 buttons:
+ * Start game button, takes the player to the nickname picking window.
+ * Customize game, make a customized map.
+ * History, watch games history.
+ * Manage question, move to question's managing window.
+ */
 import misc.MapEditor;
 import model.FancyButton;
 
@@ -11,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class StartWindow extends JFrame {
 	@SuppressWarnings("unused")
     public StartWindow(){
@@ -43,7 +50,7 @@ public class StartWindow extends JFrame {
         buttonsC.setLayout(new BoxLayout(buttonsC,BoxLayout.Y_AXIS));
         FancyButton startButton = new FancyButton("Start Game");
         FancyButton manageQuestionsButton = new FancyButton("Manage Questions");
-        FancyButton highScoreButton = new FancyButton("High Scores");
+        FancyButton highScoreButton = new FancyButton("History");
         FancyButton customButton = new FancyButton("Customize Game");
 
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);

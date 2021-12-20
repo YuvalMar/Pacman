@@ -1,5 +1,7 @@
 package view;
-
+/**
+ * When player eats a fruit(question's item), this window will display a random question on the screen.
+ */
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,8 +38,8 @@ public class QuestionWindow extends JDialog {
         buttonsC.setBackground(Color.black);
         
         getContentPane().add(buttonsC);
-        
-        int randumNum = ThreadLocalRandom.current().nextInt(0, 3);
+        int questionsNum = SysData.getInstance().getQuestionsList().size();
+        int randumNum = ThreadLocalRandom.current().nextInt(0, questionsNum);
         Question q = SysData.getInstance().getQuestionsList().get(randumNum);
         buttonsC.setLayout(null);
         JLabel qbody = new JLabel("<html>" + q.getqBody() + "</html>", JLabel.CENTER);

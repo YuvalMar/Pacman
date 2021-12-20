@@ -1,5 +1,7 @@
 package misc;
-
+/**
+ * This class helps adjust pictures of the game
+ */
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;

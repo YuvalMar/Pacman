@@ -1,5 +1,8 @@
 package view;
-
+/**
+ * The game's window, on this window will display the Game window.
+ * Has map reading and adjusting methods.
+ */
 import misc.MapData;
 import misc.MapEditor;
 import controller.Game;
@@ -62,24 +65,6 @@ public class PacWindow extends JFrame  {
         this.getContentPane().add(scoreboard, BorderLayout.SOUTH);
         this.getContentPane().add(pb);
         setVisible(true);
-    }
-
-
-    public int[][] loadMap(int mx, int my, String relPath) {
-        try {
-            Scanner scn = new Scanner(this.getClass().getResourceAsStream(relPath));
-            int[][] map;
-            map = new int[mx][my];
-            for (int y = 0; y < my; y++) {
-                for (int x = 0; x < mx; x++) {
-                    map[x][y] = scn.nextInt();
-                }
-            }
-            return map;
-        } catch (Exception e) {
-            System.err.println("Error Reading Map File !");
-        }
-        return null;
     }
 
     public MapData getMapFromResource(String relPath) {

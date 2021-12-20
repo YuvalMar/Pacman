@@ -1,5 +1,7 @@
 package model;
-
+/**
+ * Special food, question/bomb.
+ */
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

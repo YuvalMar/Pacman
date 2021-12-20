@@ -1,5 +1,7 @@
 package view;
-
+/**
+ * Games history window, displays players and their scores in a table.
+ */
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,5 +1,7 @@
 package model;
-
+/**
+ * Messages sent to Game window
+ */
 import java.awt.*;
 
 public class Messages {

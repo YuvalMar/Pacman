@@ -1,5 +1,8 @@
 package view;
-
+/**
+ * Window to manage game's questions.
+ * User can add, delete or edit a question.
+ */
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -337,7 +337,7 @@ public class Game extends JPanel {
                     int randomFood = ThreadLocalRandom.current().nextInt(foods.size()-1)+1;
                     Point f = foods.get(randomFood).position;
                     foods.remove(randomFood);
-                    pufoods.add(new PowerUpFood(f.x, f.y, puFoodToEat.type));
+                    pufoods.add(new PowerUpFood(f.x, f.y, ThreadLocalRandom.current().nextInt(1, 4)));
                     freeze();
                     QuestionWindow qw = new QuestionWindow(puFoodToEat.type);
                     windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);

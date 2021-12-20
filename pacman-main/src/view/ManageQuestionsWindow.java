@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -24,7 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class ManageQuestionsWindow extends JFrame {
 	private JTextArea qbody;
@@ -37,50 +40,55 @@ public class ManageQuestionsWindow extends JFrame {
 	public JList<Question> list;
 	public ManageQuestionsWindow() {
 		
-        setSize(808,463);
+        setSize(1028,669);
         getContentPane().setBackground(Color.black);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JPanel buttonsC = new JPanel();
+        JScrollPane sp = new JScrollPane();
+        sp.setBackground(Color.ORANGE);
+        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setSize(557, 284);
+        sp.setLocation(23, 13);
+        buttonsC.add(sp);
         buttonsC.setBackground(Color.black);
         
 		list = new JList<Question>(new Vector<Question>(SysData.getInstance().getQuestionsList()));
         list.setBackground(Color.ORANGE);
         list.setForeground(Color.RED);
-        list.setBounds(12, 13, 469, 270);
-        buttonsC.add(list);
+        list.setBounds(12, 13, 685, 415);
+//        buttonsC.add(list);
         
         qbody = new JTextArea();
-//        qbody.setHorizontalAlignment(SwingConstants.LEFT);
         qbody.setLineWrap(true);
         qbody.setWrapStyleWord(true);
-        qbody.setBounds(551, 13, 227, 72);
+        qbody.setBounds(131, 339, 577, 22);
         buttonsC.add(qbody);
         qbody.setColumns(10);
         
         
         answer1 = new JTextField();
         answer1.setColumns(10);
-        answer1.setBounds(601, 98, 116, 22);
+        answer1.setBounds(131, 374, 577, 22);
         buttonsC.add(answer1);
         
         answer2 = new JTextField();
         answer2.setColumns(10);
-        answer2.setBounds(601, 133, 116, 22);
+        answer2.setBounds(131, 409, 577, 22);
         buttonsC.add(answer2);
         
         answer3 = new JTextField();
         answer3.setColumns(10);
-        answer3.setBounds(601, 168, 116, 22);
+        answer3.setBounds(131, 443, 577, 22);
         buttonsC.add(answer3);
         
         answer4 = new JTextField();
         answer4.setColumns(10);
-        answer4.setBounds(601, 203, 116, 22);
+        answer4.setBounds(131, 478, 577, 22);
         buttonsC.add(answer4);
         
         correctAnswer = new JComboBox<String>();
-        correctAnswer.setBounds(601, 238, 50, 22);
+        correctAnswer.setBounds(131, 514, 50, 22);
         buttonsC.add(correctAnswer);
         correctAnswer.addItem("1");
         correctAnswer.addItem("2");
@@ -89,7 +97,7 @@ public class ManageQuestionsWindow extends JFrame {
         correctAnswer.setSelectedIndex(-1);
         
         diff = new JComboBox<String>();
-        diff.setBounds(601, 273, 50, 22);
+        diff.setBounds(131, 549, 50, 22);
         diff.addItem("1");
         diff.addItem("2");
         diff.addItem("3");
@@ -97,17 +105,22 @@ public class ManageQuestionsWindow extends JFrame {
         buttonsC.add(diff);
         
         FancyButton backBtn = new FancyButton("Back");
+        backBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
         FancyButton addBtn = new FancyButton("Add");
+        addBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
         FancyButton resetBtn = new FancyButton("Reset");
-        addBtn.setBounds(22, 296, 50, 20);
-        resetBtn.setBounds(663, 272, 50, 20);
+        resetBtn.setFont(new Font("Tahoma", Font.BOLD, 13));
+        addBtn.setBounds(592, 177, 50, 20);
+        resetBtn.setBounds(193, 548, 50, 20);
         FancyButton editBtn = new FancyButton("Edit");
-        editBtn.setLocation(142, 296);
+        editBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
+        editBtn.setLocation(592, 227);
         editBtn.setSize(45, 20);
         FancyButton deleteBtn = new FancyButton("Delete");
-        deleteBtn.setLocation(82, 296);
-        deleteBtn.setSize(45, 20);
-        backBtn.setBounds(12, 387, 64, 16);
+        deleteBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
+        deleteBtn.setLocation(592, 277);
+        deleteBtn.setSize(77, 20);
+        backBtn.setBounds(956, 597, 64, 16);
         resetBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -189,42 +202,43 @@ public class ManageQuestionsWindow extends JFrame {
         buttonsC.add(editBtn);
         buttonsC.add(deleteBtn);
         buttonsC.add(resetBtn);
+        sp.setViewportView(list);
         
         getContentPane().add(buttonsC);
         
         JLabel lblNewLabel = new JLabel("Question");
         lblNewLabel.setForeground(Color.ORANGE);
-        lblNewLabel.setBounds(493, 14, 56, 16);
+        lblNewLabel.setBounds(23, 342, 56, 16);
         buttonsC.add(lblNewLabel);
         
         JLabel lblAnswer = new JLabel("Answer 1");
         lblAnswer.setForeground(Color.ORANGE);
-        lblAnswer.setBounds(493, 98, 56, 16);
+        lblAnswer.setBounds(23, 374, 56, 16);
         buttonsC.add(lblAnswer);
         
         JLabel lblAnswer_2 = new JLabel("Answer 2");
         lblAnswer_2.setForeground(Color.ORANGE);
-        lblAnswer_2.setBounds(493, 133, 56, 16);
+        lblAnswer_2.setBounds(23, 409, 56, 16);
         buttonsC.add(lblAnswer_2);
         
         JLabel lblAnswer_1_1 = new JLabel("Answer 3");
         lblAnswer_1_1.setForeground(Color.ORANGE);
-        lblAnswer_1_1.setBounds(493, 168, 56, 16);
+        lblAnswer_1_1.setBounds(23, 444, 56, 16);
         buttonsC.add(lblAnswer_1_1);
         
         JLabel lblAnswer_1_1_1 = new JLabel("Answer 4");
         lblAnswer_1_1_1.setForeground(Color.ORANGE);
-        lblAnswer_1_1_1.setBounds(493, 203, 56, 16);
+        lblAnswer_1_1_1.setBounds(23, 479, 56, 16);
         buttonsC.add(lblAnswer_1_1_1);
         
         JLabel lblAnswer_1_1_1_1 = new JLabel("Correct Answer");
         lblAnswer_1_1_1_1.setForeground(Color.ORANGE);
-        lblAnswer_1_1_1_1.setBounds(493, 238, 89, 16);
+        lblAnswer_1_1_1_1.setBounds(23, 514, 89, 16);
         buttonsC.add(lblAnswer_1_1_1_1);
         
         JLabel lblAnswer_1_1_1_1_1 = new JLabel("Level");
         lblAnswer_1_1_1_1_1.setForeground(Color.ORANGE);
-        lblAnswer_1_1_1_1_1.setBounds(493, 273, 89, 16);
+        lblAnswer_1_1_1_1_1.setBounds(23, 549, 89, 16);
         buttonsC.add(lblAnswer_1_1_1_1_1);
         
 

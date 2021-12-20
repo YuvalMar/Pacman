@@ -28,7 +28,7 @@ public class QuestionWindow extends JDialog {
 	public int level = 0;
 	public QuestionWindow() {
 		
-        setSize(600,300);
+        setSize(736,335);
         getContentPane().setBackground(Color.black);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -40,11 +40,11 @@ public class QuestionWindow extends JDialog {
         int randumNum = ThreadLocalRandom.current().nextInt(0, 3);
         Question q = SysData.getInstance().getQuestionsList().get(randumNum);
         buttonsC.setLayout(null);
-        JLabel qbody = new JLabel(q.getqBody());
+        JLabel qbody = new JLabel("<html>" + q.getqBody() + "</html>", JLabel.CENTER);
         qbody.setHorizontalAlignment(SwingConstants.CENTER);
         qbody.setFont(new Font("Tahoma", Font.PLAIN, 20));
         qbody.setForeground(Color.ORANGE);
-        qbody.setBounds(193, 13, 198, 41);
+        qbody.setBounds(12, 43, 694, 41);
         setLevel(Integer.parseInt(q.getLevel()));
         buttonsC.add(qbody);
         
@@ -52,7 +52,7 @@ public class QuestionWindow extends JDialog {
         
         FancyButton answer1 = new FancyButton(q.getAnswers().get(0));
         answer1.setHorizontalAlignment(SwingConstants.CENTER);
-        answer1.setBounds(219, 67, 116, 22);
+        answer1.setBounds(12, 97, 694, 22);
         answer1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +64,7 @@ public class QuestionWindow extends JDialog {
         
         FancyButton answer2 = new FancyButton(q.getAnswers().get(1));
         answer2.setHorizontalAlignment(SwingConstants.CENTER);
-        answer2.setBounds(219, 102, 116, 22);
+        answer2.setBounds(12, 132, 694, 22);
         answer2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,7 +76,7 @@ public class QuestionWindow extends JDialog {
         
         FancyButton answer3 = new FancyButton(q.getAnswers().get(2));
         answer3.setHorizontalAlignment(SwingConstants.CENTER);
-        answer3.setBounds(219, 137, 116, 22);
+        answer3.setBounds(12, 167, 694, 22);
         answer3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,7 +88,7 @@ public class QuestionWindow extends JDialog {
         
         FancyButton answer4 = new FancyButton(q.getAnswers().get(3));
         answer4.setHorizontalAlignment(SwingConstants.CENTER);
-        answer4.setBounds(219, 172, 116, 22);
+        answer4.setBounds(12, 202, 694, 22);
         answer4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

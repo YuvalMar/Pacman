@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.awt.Font;
 
 public class PlayerNameWindow extends JFrame {
 	private JTextField textField;
@@ -27,17 +28,19 @@ public class PlayerNameWindow extends JFrame {
         buttonsC.setBackground(Color.black);
 
 		JTextField playerName = new JTextField();
-		playerName.setBounds(239, 75, 116, 22);
+		playerName.setBounds(239, 75, 137, 22);
 		buttonsC.add(playerName);
 		playerName.setColumns(10);
 		FancyButton btnNewButton = new FancyButton("Start Game");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
 		FancyButton backBtn = new FancyButton("Back");
-		btnNewButton.setBounds(256, 143, 97, 25);
-		backBtn.setBounds(256, 173, 97, 25);
+		backBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnNewButton.setBounds(239, 146, 137, 25);
+		backBtn.setBounds(473, 215, 97, 25);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(playerName.getText().length()<2)
-					JOptionPane.showMessageDialog(null, "Name must be 2 characters or more");
+				if(playerName.getText().length()<2 || playerName.getText().length()>10)
+					JOptionPane.showMessageDialog(null, "Nickname must be between 2 and 10 characters");
 				else {
 					PacWindow pw = new PacWindow(playerName.getText());
 					dispose();
@@ -58,9 +61,9 @@ public class PlayerNameWindow extends JFrame {
 		buttonsC.add(backBtn);
 		getContentPane().add(buttonsC, BorderLayout.CENTER);
 		
-		JLabel lblNewLabel = new JLabel("Player Name:");
+		JLabel lblNewLabel = new JLabel("Nickname");
 		lblNewLabel.setForeground(Color.ORANGE);
-		lblNewLabel.setBounds(135, 78, 77, 16);
+		lblNewLabel.setBounds(150, 78, 77, 16);
 		buttonsC.add(lblNewLabel);
 		setVisible(true);
 	}

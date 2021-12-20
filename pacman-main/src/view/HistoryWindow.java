@@ -23,11 +23,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
+import java.awt.Font;
 
 public class HistoryWindow extends JFrame{
 	private JTable table;
 	public HistoryWindow() {
-        setSize(819,490);
+        setSize(622,300);
         getContentPane().setBackground(Color.black);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -36,13 +37,14 @@ public class HistoryWindow extends JFrame{
         sp.setBackground(Color.ORANGE);
         
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.setSize(751, 186);
+        sp.setSize(557, 203);
         sp.setLocation(23, 13);
         buttonsC.add(sp);
         buttonsC.setBackground(Color.black);
         buttonsC.setLayout(null);  
         FancyButton backBtn = new FancyButton("Back");
-        backBtn.setBounds(720, 414, 54, 16);
+        backBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
+        backBtn.setBounds(526, 229, 54, 16);
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

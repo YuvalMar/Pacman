@@ -308,6 +308,9 @@ public class Game extends JPanel {
             SysData.getInstance().addPlayersToHistory(playerName, "200");
         }
         
+        if(score<0)
+        	score=0;
+        
         PowerUpFood puFoodToEat = null;
         //Check pu food eat
         for(PowerUpFood puf : pufoods){
@@ -332,7 +335,6 @@ public class Game extends JPanel {
                     Point f = foods.get(randomFood).position;
                     foods.remove(randomFood);
                     pufoods.add(new PowerUpFood(f.x, f.y, puFoodToEat.type));
-                    drawScore = true;
                     freeze();
                     QuestionWindow qw = new QuestionWindow();
                     windowParent.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
@@ -354,6 +356,7 @@ public class Game extends JPanel {
                     	else
                     		scoreToAdd=-30;
                     }
+                    drawScore = true;
             }  
         }
         

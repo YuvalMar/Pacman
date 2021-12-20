@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-
+@SuppressWarnings("serial")
 public class Game extends JPanel {
 
     public Timer redrawTimer;
@@ -73,8 +73,6 @@ public class Game extends JPanel {
     
 
     
-        
-    @SuppressWarnings("serial")
 	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName){
         this.playerName = playerName;
     	this.scoreboard = scoreboard;
@@ -102,7 +100,6 @@ public class Game extends JPanel {
         ghosts = new ArrayList<>();
         teleports = new ArrayList<>();
 
-        //TODO : read food from mapData (Map 1)
 
         if(!isCustom) {
             for (int i = 0; i < m_x; i++) {
@@ -174,6 +171,7 @@ public class Game extends JPanel {
         siren = new LoopPlayer("siren.wav");
         pac6 = new LoopPlayer("pac6.wav");
         siren.start();
+        //Define space button as bomb
         InputMap im = getInputMap(WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = getActionMap();
         im.put(KeyStroke.getKeyStroke("SPACE"), "space");
@@ -210,9 +208,9 @@ public class Game extends JPanel {
 	                        pacman.animTimer.stop();
 	                        g.moveTimer.stop();
 	                        isGameOver = true;
+	                        //Write player name and score to JSON file
 	                        SysData.getInstance().readJson();
 	                        SysData.getInstance().addPlayersToHistory(this.playerName, String.valueOf(score));
-	                        //scoreboard.setForeground(Color.red);
 	                        break;
                     	} else {
                     		lives--;
@@ -247,23 +245,8 @@ public class Game extends JPanel {
                             scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
                     	}
                     }
-                    	else {
-                        //Eat Ghost
-                        SoundPlayer.play("pacman_eatghost.wav");
-                        //getGraphics().setFont(new Font("Arial",Font.BOLD,20));
-                        drawScore = true;
-                        scoreToAdd++;
-                        if(ghostBase!=null)
-                            g.die();
-                        else
-                            ghostToRemove = g;
-                    }
                 }
             }
-        }
-
-        if(ghostToRemove!= null){
-            ghosts.remove(ghostToRemove);
         }
     }
     
@@ -476,14 +459,6 @@ public class Game extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        //DEBUG ONLY !
-        /*for(int ii=0;ii<=m_x;ii++){
-            g.drawLine(ii*28+10,10,ii*28+10,m_y*28+10);
-        }
-        for(int ii=0;ii<=m_y;ii++){
-            g.drawLine(10,ii*28+10,m_x*28+10,ii*28+10);
-        }*/
-
         //Draw Walls
         g.setColor(Color.blue);
         for(int i=0;i<m_x;i++){
@@ -590,6 +565,7 @@ public class Game extends JPanel {
         }
     }
     
+    //freeze and unfreeze all moving object on board(pacman and ghosts)
     public void freeze() {
         pacman.moveTimer.stop();
         pacman.animTimer.stop();
@@ -606,61 +582,14 @@ public class Game extends JPanel {
         	g.animTimer.start();
         }
     }
-       
+    
+    //Restart using same player name
     public void restart(){
-
         siren.stop();
         new PacWindow(this.playerName);
         windowParent.dispose();
-
-        /*
-        removeKeyListener(pacman);
-
-        isGameOver = false;
-
-        pacman = new Pacman(md_backup.getPacmanPosition().x,md_backup.getPacmanPosition().y,this);
-        addKeyListener(pacman);
-
-        foods = new ArrayList<>();
-        pufoods = new ArrayList<>();
-        ghosts = new ArrayList<>();
-        teleports = new ArrayList<>();
-
-        //TODO : read food from mapData (Map 1)
-
-        if(!isCustom) {
-            for (int i = 0; i < m_x; i++) {
-                for (int j = 0; j < m_y; j++) {
-                    if (map[i][j] == 0)
-                        foods.add(new Food(i, j));
-                }
-            }
-        }else{
-            foods = md_backup.getFoodPositions();
-        }
-
-
-
-        pufoods = md_backup.getPufoodPositions();
-
-        ghosts = new ArrayList<>();
-        for(GhostData gd : md_backup.getGhostsData()){
-            switch(gd.getType()) {
-                case RED:
-                    ghosts.add(new RedGhost(gd.getX(), gd.getY(), this));
-                    break;
-                case PINK:
-                    ghosts.add(new PinkGhost(gd.getX(), gd.getY(), this));
-                    break;
-                case CYAN:
-                    ghosts.add(new CyanGhost(gd.getX(), gd.getY(), this));
-                    break;
-            }
-        }
-
-        teleports = md_backup.getTeleports();
-        */
     }
+    
     public void setBombPoints(int num) {
     	if(num<0)
     		this.bombPoints=0;

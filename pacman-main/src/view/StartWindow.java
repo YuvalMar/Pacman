@@ -2,7 +2,7 @@ package view;
 
 import misc.MapEditor;
 import model.FancyButton;
-import view.PacWindow;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class StartWindow extends JFrame {
-
+	@SuppressWarnings("unused")
     public StartWindow(){
         setSize(600,300);
         getContentPane().setBackground(Color.black);
@@ -54,7 +54,7 @@ public class StartWindow extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	PlayerNameWindow pn = new PlayerNameWindow();
+				PlayerNameWindow pn = new PlayerNameWindow();
                 //new PacWindow();
                 dispose();
             }
@@ -83,7 +83,7 @@ public class StartWindow extends JFrame {
                 dispose();
             }
         });
-
+        
         buttonsC.add(startButton);
         buttonsC.add(customButton);
         buttonsC.add(highScoreButton);

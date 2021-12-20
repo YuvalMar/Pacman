@@ -172,8 +172,7 @@ public class ManageQuestionsWindow extends JFrame {
 						dispose();
 					}
 				}else
-					JOptionPane.showMessageDialog(null, "Pick a question to edit");
-					
+					JOptionPane.showMessageDialog(null, "Pick a question to edit");		
 			}
 		});
         

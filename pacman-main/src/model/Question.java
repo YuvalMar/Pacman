@@ -1,11 +1,9 @@
 package model;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Question {
     
-    public static int id = 1;
     public String level;
     public String qBody;
     public ArrayList<String> answers = new ArrayList<String>();
@@ -13,22 +11,12 @@ public class Question {
     
 
     public Question(String level, String qBody, ArrayList<String> answers, String correct) {
-        Question.id = id++;
         this.level = level;
         this.qBody = qBody;
         for(String a : answers)
         	this.answers.add(a);
         this.correctAns = correct;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
     public String getLevel() {
         return level;

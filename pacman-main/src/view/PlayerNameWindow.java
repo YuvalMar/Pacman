@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
+import javax.swing.JRadioButton;
 
 public class PlayerNameWindow extends JFrame {
 	private JTextField textField;
@@ -34,18 +35,32 @@ public class PlayerNameWindow extends JFrame {
 		playerName.setBounds(239, 75, 137, 22);
 		buttonsC.add(playerName);
 		playerName.setColumns(10);
+		
 		FancyButton btnNewButton = new FancyButton("Start Game");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
 		FancyButton backBtn = new FancyButton("Back");
 		backBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnNewButton.setBounds(239, 146, 137, 25);
+		btnNewButton.setBounds(239, 175, 137, 25);
 		backBtn.setBounds(473, 215, 97, 25);
+		
+		JRadioButton rdbtnPacman = new JRadioButton("Pacman");
+		rdbtnPacman.setForeground(Color.ORANGE);
+		rdbtnPacman.setBounds(239, 109, 137, 25);
+		rdbtnPacman.setOpaque(false);
+		buttonsC.add(rdbtnPacman);
+		
+		JRadioButton rdbtnPacwoman = new JRadioButton("Pacwoman");
+		rdbtnPacwoman.setForeground(Color.ORANGE);
+		rdbtnPacwoman.setBounds(239, 141, 137, 25);
+		rdbtnPacwoman.setOpaque(false);
+		buttonsC.add(rdbtnPacwoman);
+		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(playerName.getText().length()<2 || playerName.getText().length()>10)
 					JOptionPane.showMessageDialog(null, "Nickname must be between 2 and 10 characters");
 				else {
-					PacWindow pw = new PacWindow(playerName.getText());
+					PacWindow pw = new PacWindow(playerName.getText(), rdbtnPacwoman.isSelected());
 					dispose();
 				}
 			}
@@ -68,6 +83,8 @@ public class PlayerNameWindow extends JFrame {
 		lblNewLabel.setForeground(Color.ORANGE);
 		lblNewLabel.setBounds(150, 78, 77, 16);
 		buttonsC.add(lblNewLabel);
+		
+
 		setVisible(true);
 	}
 }

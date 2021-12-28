@@ -61,6 +61,7 @@ public class Game extends JPanel {
     public int bombPoints;
     public int level;
     public boolean pacmanBomb = false;
+    public boolean pacwoman;
 
     public int score;
     public JLabel scoreboard;
@@ -80,13 +81,14 @@ public class Game extends JPanel {
     public String playerName;
     
 
-	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName){
+	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName, boolean pacwoman){
         this.playerName = playerName;
     	this.scoreboard = scoreboard;
         this.setDoubleBuffered(true);
         md_backup = md;
         windowParent = pw;
         this.lives = 3;
+        this.pacwoman = pacwoman;
 
         m_x = md.getX();
         m_y = md.getY();
@@ -97,7 +99,7 @@ public class Game extends JPanel {
 
        
 
-        pacman = new Pacman(md.getPacmanPosition().x,md.getPacmanPosition().y,this);
+        pacman = new Pacman(md.getPacmanPosition().x,md.getPacmanPosition().y,this, this.pacwoman);
         addKeyListener(pacman);
 
         foods = new ArrayList<>();
@@ -432,12 +434,12 @@ public class Game extends JPanel {
         scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
         
         if(bombPoints>0 && !pacmanBomb) { 
-        	pacman.setBombImage();
+        	pacman.setBombImage(this.pacwoman);
         	pacmanBomb = true;
         }
         
         else if(bombPoints<1 && pacmanBomb) {
-        	pacman.setPacImage();
+        	pacman.setPacImage(this.pacwoman);
         	pacmanBomb = false;
         }
 
@@ -605,7 +607,7 @@ public class Game extends JPanel {
     //Restart using same player name
     public void restart(){
         siren.stop();
-        new PacWindow(this.playerName);
+        new PacWindow(this.playerName, this.pacwoman);
         windowParent.dispose();
     }
     

@@ -90,7 +90,7 @@ public class MapEditor extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PacWindow(compileMap(ta.getText()),"Player");
+                new PacWindow(compileMap(ta.getText()),"Player", true);
             }
         });
         back.addActionListener(new ActionListener() {

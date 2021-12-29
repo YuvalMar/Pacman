@@ -1,4 +1,5 @@
 package view;
+import javax.swing.ButtonGroup;
 /*
  * In this window the player will enter his nickname.
  * Nickname must be between 2 and 10 characters, else there will be a message.
@@ -45,6 +46,7 @@ public class PlayerNameWindow extends JFrame {
 		rdbtnPacman.setForeground(Color.ORANGE);
 		rdbtnPacman.setBounds(239, 109, 137, 25);
 		rdbtnPacman.setOpaque(false);
+		rdbtnPacman.setSelected(true);
 		buttonsC.add(rdbtnPacman);
 		
 		JRadioButton rdbtnPacwoman = new JRadioButton("Pacwoman");
@@ -52,6 +54,10 @@ public class PlayerNameWindow extends JFrame {
 		rdbtnPacwoman.setBounds(239, 141, 137, 25);
 		rdbtnPacwoman.setOpaque(false);
 		buttonsC.add(rdbtnPacwoman);
+		
+		ButtonGroup g = new ButtonGroup();
+		g.add(rdbtnPacwoman);
+		g.add(rdbtnPacman);
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			@SuppressWarnings("unused")

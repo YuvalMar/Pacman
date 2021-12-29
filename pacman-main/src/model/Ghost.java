@@ -125,7 +125,8 @@ public abstract class Ghost {
         animTimer.start();
 
         moveAL = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            @SuppressWarnings("incomplete-switch")
+			public void actionPerformed(ActionEvent evt) {
 
                 if((pixelPosition.x % 28 == 0) && (pixelPosition.y % 28 == 0)){
                     if(!isStuck) {
@@ -297,7 +298,8 @@ public abstract class Ghost {
         return possibleMoves;
     }
 
-    public Image getGhostImage(){
+    @SuppressWarnings("incomplete-switch")
+	public Image getGhostImage(){
         if(!isDead) {
             if (!isWeak) {
                 switch (activeMove) {

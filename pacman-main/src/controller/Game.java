@@ -80,7 +80,15 @@ public class Game extends JPanel {
     public boolean map2 = false;
     public String playerName;
     
-
+    /**
+     * 
+     * @param scoreboard
+     * @param md
+     * @param pw
+     * @param playerName
+     * @param pacwoman
+     * Define new game with a the given player name and pacman choice(pacman or pacwoman)
+     */
 	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName, boolean pacwoman){
         this.playerName = playerName;
     	this.scoreboard = scoreboard;
@@ -176,7 +184,6 @@ public class Game extends JPanel {
         redrawTimer = new Timer(16,redrawAL);
         redrawTimer .start();
 
-        //SoundPlayer.play("pacman_start.wav");
         siren = new LoopPlayer("siren.wav");
         pac6 = new LoopPlayer("pac6.wav");
         siren.start();
@@ -207,7 +214,6 @@ public class Game extends JPanel {
 	 */
     public void collisionTest(){
     	Rectangle pr = new Rectangle(pacman.pixelPosition.x+13,pacman.pixelPosition.y+13,2,2);
-        Ghost ghostToRemove = null;
         for(Ghost g : ghosts){
             Rectangle gr = new Rectangle(g.pixelPosition.x,g.pixelPosition.y,28,28);
 
@@ -377,7 +383,7 @@ public class Game extends JPanel {
         
         //Check if level changed and map, ghost or pacman speed needs to be updated.
          if(this.level == 2 && !map2 ) { // level 2 and need to open teleports
-        	 flag_level3=true;
+        	flag_level3=true;
             MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
             adjustMap(map1);
             this.map = map1.getMap();

@@ -14,6 +14,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Scanner;
 
+@SuppressWarnings("serial")
 public class PacWindow extends JFrame  {
 
     public PacWindow(String playerName, boolean pacwoman) {

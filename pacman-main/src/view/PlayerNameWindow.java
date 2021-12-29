@@ -6,10 +6,7 @@ package view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
 import model.FancyButton;
-
-import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -20,8 +17,9 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 
+@SuppressWarnings("serial")
 public class PlayerNameWindow extends JFrame {
-	private JTextField textField;
+
 	public PlayerNameWindow() {
 		
         setSize(600,300);
@@ -56,6 +54,7 @@ public class PlayerNameWindow extends JFrame {
 		buttonsC.add(rdbtnPacwoman);
 		
 		btnNewButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
 			public void actionPerformed(ActionEvent arg0) {
 				if(playerName.getText().length()<2 || playerName.getText().length()>10)
 					JOptionPane.showMessageDialog(null, "Nickname must be between 2 and 10 characters");
@@ -67,6 +66,7 @@ public class PlayerNameWindow extends JFrame {
 		});
 		backBtn.addActionListener(new ActionListener() {
 			
+			@SuppressWarnings("unused")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				StartWindow s = new StartWindow();

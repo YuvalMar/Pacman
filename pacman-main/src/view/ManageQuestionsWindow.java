@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
-
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -18,20 +16,17 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import controller.SysData;
-import misc.MapEditor;
 import model.FancyButton;
 import model.Question;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.SwingConstants;
-import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class ManageQuestionsWindow extends JFrame {
 	private JTextArea qbody;
 	private JTextField answer1;
@@ -237,7 +232,7 @@ public class ManageQuestionsWindow extends JFrame {
         
         JLabel lblAnswer_1_1_1_1 = new JLabel("Correct Answer");
         lblAnswer_1_1_1_1.setForeground(Color.ORANGE);
-        lblAnswer_1_1_1_1.setBounds(23, 514, 89, 16);
+        lblAnswer_1_1_1_1.setBounds(23, 514, 110, 16);
         buttonsC.add(lblAnswer_1_1_1_1);
         
         JLabel lblAnswer_1_1_1_1_1 = new JLabel("Level");

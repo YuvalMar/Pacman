@@ -169,7 +169,8 @@ public class Pacman implements KeyListener{
 
     }
 
-    public boolean isPossibleMove(moveType move){
+    @SuppressWarnings("incomplete-switch")
+	public boolean isPossibleMove(moveType move){
         if(logicalPosition.x >= 0 && logicalPosition.x < parentBoard.m_x-1 && logicalPosition.y >= 0 && logicalPosition.y < parentBoard.m_y-1 ) {
             switch(move){
                 case RIGHT:

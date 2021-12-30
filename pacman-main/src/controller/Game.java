@@ -157,7 +157,10 @@ public class Game extends JPanel {
         mapSegments[0] = null;
         for(int ms=1;ms<28;ms++){
             try {
-                mapSegments[ms] = ImageIO.read(this.getClass().getResource("/resources/images/map segments/"+ms+".png"));
+            	if(pacwoman)
+            		mapSegments[ms] = ImageIO.read(this.getClass().getResource("/resources/images/map segments/pink/"+ms+".png"));
+            	else
+            		mapSegments[ms] = ImageIO.read(this.getClass().getResource("/resources/images/map segments/"+ms+".png"));
             }catch(Exception e){}
         }
 
@@ -490,7 +493,8 @@ public class Game extends JPanel {
         super.paintComponent(g);
 
         //Draw Walls
-        g.setColor(Color.blue);
+        Color color = pacwoman? Color.pink : Color.blue;
+        g.setColor(color);
         for(int i=0;i<m_x;i++){
             for(int j=0;j<m_y;j++){
                 if(map[i][j]>0){

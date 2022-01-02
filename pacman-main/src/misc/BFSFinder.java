@@ -30,8 +30,7 @@ public class BFSFinder {
     private class MazeCell {
         int x;
         int y;
-        @SuppressWarnings("unused")
-		boolean isVisited;
+        boolean isVisited;
 
         public MazeCell(int x, int y) {
             this.x = x;

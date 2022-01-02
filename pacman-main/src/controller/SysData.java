@@ -1,15 +1,23 @@
 package controller;
 
-
+import java.awt.Point;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import exceptions.NotFourAnswersException;
 import model.Question;
 
 
@@ -114,6 +122,8 @@ public class SysData {
 	@SuppressWarnings("unchecked")
 	public  boolean addQuestion(String question, ArrayList<String> answers, String correctAnswer, String level) {
 		try {
+			if(answers.size() != 4)
+				throw new NotFourAnswersException();
 			JSONObject q = (JSONObject) new JSONParser().parse(new FileReader(path));
 			JSONArray arr = (JSONArray) q.get("questions");
 			JSONObject obj = new JSONObject();
@@ -138,6 +148,9 @@ public class SysData {
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 			return false;
+		} catch (NotFourAnswersException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return true;
 	}

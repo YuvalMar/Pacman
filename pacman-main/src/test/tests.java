@@ -1,11 +1,16 @@
 package test;
-
 import controller.SysData;
 import model.Question;
-import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
-import org.junit.jupiter.api.Test;
+import exceptions.NotFourAnswersException;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
+import org.junit.Rule;
+import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 
 class tests {
 

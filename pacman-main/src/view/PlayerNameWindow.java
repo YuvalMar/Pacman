@@ -1,5 +1,4 @@
 package view;
-import javax.swing.ButtonGroup;
 /*
  * In this window the player will enter his nickname.
  * Nickname must be between 2 and 10 characters, else there will be a message.
@@ -7,7 +6,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
 import model.FancyButton;
+
+import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -16,11 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
-import javax.swing.JRadioButton;
 
-@SuppressWarnings("serial")
 public class PlayerNameWindow extends JFrame {
-
+	private JTextField textField;
 	public PlayerNameWindow() {
 		
         setSize(600,300);
@@ -34,45 +34,24 @@ public class PlayerNameWindow extends JFrame {
 		playerName.setBounds(239, 75, 137, 22);
 		buttonsC.add(playerName);
 		playerName.setColumns(10);
-		
 		FancyButton btnNewButton = new FancyButton("Start Game");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
 		FancyButton backBtn = new FancyButton("Back");
 		backBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnNewButton.setBounds(239, 175, 137, 25);
+		btnNewButton.setBounds(239, 146, 137, 25);
 		backBtn.setBounds(473, 215, 97, 25);
-		
-		JRadioButton rdbtnPacman = new JRadioButton("Pacman");
-		rdbtnPacman.setForeground(Color.ORANGE);
-		rdbtnPacman.setBounds(239, 109, 137, 25);
-		rdbtnPacman.setOpaque(false);
-		rdbtnPacman.setSelected(true);
-		buttonsC.add(rdbtnPacman);
-		
-		JRadioButton rdbtnPacwoman = new JRadioButton("Pacwoman");
-		rdbtnPacwoman.setForeground(Color.ORANGE);
-		rdbtnPacwoman.setBounds(239, 141, 137, 25);
-		rdbtnPacwoman.setOpaque(false);
-		buttonsC.add(rdbtnPacwoman);
-		
-		ButtonGroup g = new ButtonGroup();
-		g.add(rdbtnPacwoman);
-		g.add(rdbtnPacman);
-		
 		btnNewButton.addActionListener(new ActionListener() {
-			@SuppressWarnings("unused")
 			public void actionPerformed(ActionEvent arg0) {
 				if(playerName.getText().length()<2 || playerName.getText().length()>10)
 					JOptionPane.showMessageDialog(null, "Nickname must be between 2 and 10 characters");
 				else {
-					PacWindow pw = new PacWindow(playerName.getText(), rdbtnPacwoman.isSelected());
+					PacWindow pw = new PacWindow(playerName.getText());
 					dispose();
 				}
 			}
 		});
 		backBtn.addActionListener(new ActionListener() {
 			
-			@SuppressWarnings("unused")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				StartWindow s = new StartWindow();
@@ -89,8 +68,6 @@ public class PlayerNameWindow extends JFrame {
 		lblNewLabel.setForeground(Color.ORANGE);
 		lblNewLabel.setBounds(150, 78, 77, 16);
 		buttonsC.add(lblNewLabel);
-		
-
 		setVisible(true);
 	}
 }

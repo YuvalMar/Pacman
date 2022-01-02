@@ -1,25 +1,31 @@
 package view;
 /**
  * When player eats a fruit(question's item), this window will display a random question on the screen.
- * Question level is dependent on the fruit's color. 
  */
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import controller.SysData;
 import model.FancyButton;
 import model.Question;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-@SuppressWarnings("serial")
 public class QuestionWindow extends JDialog {
 	
 	public boolean correct =false;

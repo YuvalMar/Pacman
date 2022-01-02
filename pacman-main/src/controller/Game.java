@@ -61,7 +61,6 @@ public class Game extends JPanel {
     public int bombPoints;
     public int level;
     public boolean pacmanBomb = false;
-    public boolean pacwoman;
 
     public int score;
     public JLabel scoreboard;
@@ -80,23 +79,14 @@ public class Game extends JPanel {
     public boolean map2 = false;
     public String playerName;
     
-    /**
-     * 
-     * @param scoreboard
-     * @param md
-     * @param pw
-     * @param playerName
-     * @param pacwoman
-     * Define new game with a the given player name and pacman choice(pacman or pacwoman)
-     */
-	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName, boolean pacwoman){
+
+	public Game(JLabel scoreboard, MapData md, PacWindow pw, String playerName){
         this.playerName = playerName;
     	this.scoreboard = scoreboard;
         this.setDoubleBuffered(true);
         md_backup = md;
         windowParent = pw;
         this.lives = 3;
-        this.pacwoman = pacwoman;
 
         m_x = md.getX();
         m_y = md.getY();
@@ -107,7 +97,7 @@ public class Game extends JPanel {
 
        
 
-        pacman = new Pacman(md.getPacmanPosition().x,md.getPacmanPosition().y,this, this.pacwoman);
+        pacman = new Pacman(md.getPacmanPosition().x,md.getPacmanPosition().y,this);
         addKeyListener(pacman);
 
         foods = new ArrayList<>();
@@ -157,10 +147,7 @@ public class Game extends JPanel {
         mapSegments[0] = null;
         for(int ms=1;ms<28;ms++){
             try {
-            	if(pacwoman)
-            		mapSegments[ms] = ImageIO.read(this.getClass().getResource("/resources/images/map segments/pink/"+ms+".png"));
-            	else
-            		mapSegments[ms] = ImageIO.read(this.getClass().getResource("/resources/images/map segments/"+ms+".png"));
+                mapSegments[ms] = ImageIO.read(this.getClass().getResource("/resources/images/map segments/"+ms+".png"));
             }catch(Exception e){}
         }
 
@@ -187,6 +174,7 @@ public class Game extends JPanel {
         redrawTimer = new Timer(16,redrawAL);
         redrawTimer .start();
 
+        //SoundPlayer.play("pacman_start.wav");
         siren = new LoopPlayer("siren.wav");
         pac6 = new LoopPlayer("pac6.wav");
         siren.start();
@@ -217,6 +205,7 @@ public class Game extends JPanel {
 	 */
     public void collisionTest(){
     	Rectangle pr = new Rectangle(pacman.pixelPosition.x+13,pacman.pixelPosition.y+13,2,2);
+        Ghost ghostToRemove = null;
         for(Ghost g : ghosts){
             Rectangle gr = new Rectangle(g.pixelPosition.x,g.pixelPosition.y,28,28);
 
@@ -386,7 +375,7 @@ public class Game extends JPanel {
         
         //Check if level changed and map, ghost or pacman speed needs to be updated.
          if(this.level == 2 && !map2 ) { // level 2 and need to open teleports
-        	flag_level3=true;
+        	 flag_level3=true;
             MapData map1 = getMapFromResource("/resources/maps/map1_c.txt");
             adjustMap(map1);
             this.map = map1.getMap();
@@ -443,12 +432,12 @@ public class Game extends JPanel {
         scoreboard.setText("    Score : "+score + "   Lives : "+lives + "   Level : " + this.level);
         
         if(bombPoints>0 && !pacmanBomb) { 
-        	pacman.setBombImage(this.pacwoman);
+        	pacman.setBombImage();
         	pacmanBomb = true;
         }
         
         else if(bombPoints<1 && pacmanBomb) {
-        	pacman.setPacImage(this.pacwoman);
+        	pacman.setPacImage();
         	pacmanBomb = false;
         }
 
@@ -493,8 +482,7 @@ public class Game extends JPanel {
         super.paintComponent(g);
 
         //Draw Walls
-        Color color = pacwoman? Color.pink : Color.blue;
-        g.setColor(color);
+        g.setColor(Color.blue);
         for(int i=0;i<m_x;i++){
             for(int j=0;j<m_y;j++){
                 if(map[i][j]>0){
@@ -617,7 +605,7 @@ public class Game extends JPanel {
     //Restart using same player name
     public void restart(){
         siren.stop();
-        new PacWindow(this.playerName, this.pacwoman);
+        new PacWindow(this.playerName);
         windowParent.dispose();
     }
     

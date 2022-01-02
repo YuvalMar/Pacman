@@ -1,12 +1,15 @@
 package view;
 /**
- * The first window when running the game. Has the games logo, and 3 buttons:
+ * The first window when running the game. Has the games logo, and 4 buttons:
  * Start game button, takes the player to the nickname picking window.
+ * Customize game, make a customized map.
  * History, watch games history.
  * Manage question, move to question's managing window.
  */
-
+import misc.MapEditor;
 import model.FancyButton;
+
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -48,10 +51,12 @@ public class StartWindow extends JFrame {
         FancyButton startButton = new FancyButton("Start Game");
         FancyButton manageQuestionsButton = new FancyButton("Manage Questions");
         FancyButton highScoreButton = new FancyButton("History");
+        FancyButton customButton = new FancyButton("Customize Game");
 
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         manageQuestionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         highScoreButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -61,7 +66,15 @@ public class StartWindow extends JFrame {
                 dispose();
             }
         });
-       
+
+        customButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MapEditor me = new MapEditor();
+                dispose();
+            }
+        });
+        
         manageQuestionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,9 +92,9 @@ public class StartWindow extends JFrame {
         });
         
         buttonsC.add(startButton);
-        buttonsC.add(manageQuestionsButton);
+        buttonsC.add(customButton);
         buttonsC.add(highScoreButton);
-        
+        buttonsC.add(manageQuestionsButton);
 
         getContentPane().add(buttonsC);
 

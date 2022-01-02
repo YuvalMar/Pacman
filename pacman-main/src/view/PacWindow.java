@@ -14,10 +14,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Scanner;
 
-@SuppressWarnings("serial")
 public class PacWindow extends JFrame  {
 
-    public PacWindow(String playerName, boolean pacwoman) {
+    public PacWindow(String playerName) {
         setTitle("Wolf Team Pacman");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
@@ -32,7 +31,7 @@ public class PacWindow extends JFrame  {
         MapData map1 = getMapFromResource("/resources/maps/start_map.txt");
         adjustMap(map1);
 
-        Game pb = new Game(scoreboard, map1, this, playerName, pacwoman);
+        Game pb = new Game(scoreboard, map1, this, playerName);
 
         pb.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(Color.BLUE)));
         addKeyListener(pb.pacman);
@@ -45,7 +44,7 @@ public class PacWindow extends JFrame  {
     /**
      * @wbp.parser.constructor
      */
-    public PacWindow(MapData md, String playerName, boolean pacwoman) {
+    public PacWindow(MapData md, String playerName) {
         setTitle("AKP Pacman v1.0");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
@@ -59,7 +58,7 @@ public class PacWindow extends JFrame  {
 
         //int[][] mapLoaded = loadMap(27,29,"/maps/map1.txt");
         adjustMap(md);
-        Game pb = new Game(scoreboard, md, this, playerName, pacwoman);
+        Game pb = new Game(scoreboard, md, this, playerName);
         pb.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(Color.BLUE)));
         addKeyListener(pb.pacman);
 

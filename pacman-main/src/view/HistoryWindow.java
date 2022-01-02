@@ -5,28 +5,21 @@ package view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
-
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-
 import controller.SysData;
 import model.FancyButton;
-import model.Question;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 import java.awt.Font;
-
+// @author - Dor & Yuval 
+@SuppressWarnings("serial")
 public class HistoryWindow extends JFrame{
 	private JTable table;
 	public HistoryWindow() {
@@ -48,7 +41,8 @@ public class HistoryWindow extends JFrame{
         backBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
         backBtn.setBounds(526, 229, 54, 16);
         backBtn.addActionListener(new ActionListener() {
-            @Override
+            @SuppressWarnings("unused")
+			@Override
             public void actionPerformed(ActionEvent e) {
                 StartWindow sw = new StartWindow();
                 dispose();

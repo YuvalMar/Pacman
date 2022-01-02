@@ -3,109 +3,16 @@ package misc;
  * Class to define map data.
  * Defines each character from map's string.
  */
-import model.FancyButton;
+
 import model.Food;
 import model.PowerUpFood;
 import model.TeleportTunnel;
-import view.PacWindow;
-import view.StartWindow;
-
-import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MapEditor extends JFrame {
+public class MapEditor {
 
     public MapEditor(){
-        setSize(650,400);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        getContentPane().setBackground(Color.black);
-
-        JPanel sideBar = new JPanel();
-        sideBar.setLayout(new BorderLayout());
-        sideBar.setBackground(Color.black);
-        JPanel ghostSelection = new JPanel();
-        ghostSelection.setLayout(new BoxLayout(ghostSelection,BoxLayout.Y_AXIS));
-        ghostSelection.setBackground(Color.black);
-        JLabel l0 = new JLabel("= : Blank Space (without Food)");
-        JLabel l1 = new JLabel("_ : Blank Space (with Food)");
-        JLabel l2 = new JLabel("X : Wall");
-        JLabel l3 = new JLabel("Y : Semi-Wall (Passable by Ghosts)");
-        JLabel l4 = new JLabel("P : Pacman Start Position");
-        JLabel l5 = new JLabel("1 : Red Ghost (Chaser)");
-        JLabel l6 = new JLabel("2 : Pink Ghost (Traveler)");
-        JLabel l7 = new JLabel("3 : Cyan Ghost (Patrol)");
-        JLabel l8 = new JLabel("F : Fruit");
-        JLabel l9 = new JLabel("B : Ghost Base");
-        //JLabel l4 = new JLabel("1 : Red Ghost (Chaser)");
-
-        l0.setForeground(Color.yellow);
-        l1.setForeground(Color.yellow);
-        l2.setForeground(Color.yellow);
-        l3.setForeground(Color.yellow);
-        l4.setForeground(Color.yellow);
-        l5.setForeground(Color.yellow);
-        l6.setForeground(Color.yellow);
-        l7.setForeground(Color.yellow);
-        l8.setForeground(Color.yellow);
-        l9.setForeground(Color.yellow);
-
-        ghostSelection.add(l0);
-        ghostSelection.add(l1);
-        ghostSelection.add(l2);
-        ghostSelection.add(l3);
-        ghostSelection.add(l4);
-        ghostSelection.add(l5);
-        ghostSelection.add(l6);
-        ghostSelection.add(l7);
-        ghostSelection.add(l8);
-        ghostSelection.add(l9);
-
-        getContentPane().setLayout(new BorderLayout());
-        sideBar.add(ghostSelection,BorderLayout.NORTH);
-        getContentPane().add(sideBar,BorderLayout.EAST);
-
-        JTextArea ta = new JTextArea();
-        ta.setBackground(Color.black);
-        ta.setForeground(Color.yellow);
-        ta.setText("XXXXXXXXXX\n"
-                +  "XP_______X\n"
-                +  "X________X\n"
-                +  "X________X\n"
-                +  "XXXXXXXXXX");
-        ta.setBorder(new CompoundBorder(new CompoundBorder(new EmptyBorder(20,10,20,10),new LineBorder(Color.yellow)),new EmptyBorder(10,10,10,10)));
-        getContentPane().add(ta);
-
-
-        FancyButton startButton = new FancyButton("Start Game");
-        FancyButton back = new FancyButton("Back");
-        back.setVerticalAlignment(SwingConstants.BOTTOM);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new PacWindow(compileMap(ta.getText()),"Player");
-            }
-        });
-        back.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				StartWindow s = new StartWindow();
-				dispose();
-			}
-		});
-        sideBar.add(startButton,BorderLayout.SOUTH);
-        sideBar.add(back);
-        //setLayout(new Grid);
-
-        setVisible(true);
     }
 
     //Resolve Map
@@ -165,13 +72,11 @@ public class MapEditor extends JFrame {
             }
             if(c == 'T'){
                 map[i][j] = 0;
-                int x = map[i].length -3;
                 customMap.getTeleports().add(new TeleportTunnel(0, j, 26, j, moveType.LEFT ));
                 customMap.getTeleports().add(new TeleportTunnel(26,j, 0, j, moveType.RIGHT ));
             }
             if(c == 'G'){
                 map[i][j] = 0;
-                int x = map[i].length -3;
                 customMap.getTeleports().add(new TeleportTunnel(i, 0, i, 28, moveType.UP ));
                 customMap.getTeleports().add(new TeleportTunnel(i,28, i, 0, moveType.DOWN ));
             }
